@@ -12,7 +12,7 @@ namespace InventoryManagement.Models
         public string EmployeeAddress { get; set; }
         public bool? Gender { get; set; }
         public DateTime? Birthdate { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
     }
 }
