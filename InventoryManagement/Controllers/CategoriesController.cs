@@ -20,10 +20,21 @@ namespace InventoryManagement.Controllers
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.Categories.ToListAsync());
+            var categories = from m in _context.Categories
+                         select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                categories = categories.Where(s => s.CategoryName.Contains(searchString));
+            }
+
+            return View(await categories.ToListAsync());
+            //return View(await _context.Categories.ToListAsync());
         }
+
+
 
         // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
