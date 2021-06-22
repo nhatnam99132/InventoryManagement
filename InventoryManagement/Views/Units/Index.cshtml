@@ -1,15 +1,15 @@
-﻿@model IEnumerable<InventoryManagement.Models.Category>
+﻿@model IEnumerable<InventoryManagement.Models.Unit>
 
 @{
-    ViewData["Title"] = "Category Manager";
+    ViewData["Title"] = "Unit Manager";
 }
 
-<h1>Category</h1>
+<h1>Unit</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<form asp-controller="Categories" asp-action="Index" method="get">
+<form asp-controller="Units" asp-action="Index" method="get">
     <p>
         Search by name: <input type="text" name="SearchString" />
         <input type="submit" value="Search" />
@@ -19,7 +19,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CategoryName)
+                @Html.DisplayNameFor(model => model.UnitName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedDate)
@@ -40,7 +40,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.CategoryName)
+                @Html.DisplayFor(modelItem => item.UnitName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedDate)

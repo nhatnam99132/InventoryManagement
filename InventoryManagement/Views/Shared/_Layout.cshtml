@@ -24,10 +24,22 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+                        @*<li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+        </li>*@
+                  
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Product Manager
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Units" asp-action="Index">Units</a>
+                            </div>
                         </li>
                     </ul>
+                  
                     <partial name="_LoginPartial" />
                 </div>
             </div>

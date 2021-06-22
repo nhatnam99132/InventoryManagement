@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -13,6 +14,8 @@ namespace InventoryManagement.Models
         }
 
         public int Id { get; set; }
+        [Required]
+        [Display(Name = "Unit Name")]
         public string UnitName { get; set; }
        
 

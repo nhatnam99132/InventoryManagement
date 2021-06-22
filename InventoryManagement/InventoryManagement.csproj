@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Data\" />
-    <Folder Include="Views\Products\" />
   </ItemGroup>
 
 </Project>
