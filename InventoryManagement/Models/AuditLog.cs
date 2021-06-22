@@ -3,7 +3,7 @@
 
 namespace InventoryManagement.Models
 {
-    public partial class AuditLog
+    public partial class AuditLog : DatetimeEntity
     {
         public int Id { get; set; }
         public string Type { get; set; }
@@ -19,10 +19,8 @@ namespace InventoryManagement.Models
         public double? PriceAfterDiscount { get; set; }
         public double? TotalAmount { get; set; }
         public int? CustomerId { get; set; }
-        public int? CreatedBy { get; set; }
-        public DateTime? CreatedDate { get; set; }
-        public int? UpdatedBy { get; set; }
-        public DateTime? UpdatedDate { get; set; }
+
+        
 
         public virtual Product Product { get; set; }
         public virtual Supplier Supplier { get; set; }

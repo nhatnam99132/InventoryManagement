@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using InventoryManagement.Models;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +15,53 @@ namespace InventoryManagement.Data
         public InventoryManagementContext(DbContextOptions<InventoryManagementContext> options)
             : base(options)
         {
+        }
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            OnBeforeSaving();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+
+        public override async Task<int> SaveChangesAsync(
+           bool acceptAllChangesOnSuccess,
+           CancellationToken cancellationToken = default(CancellationToken)
+        )
+        {
+            OnBeforeSaving();
+            return (await base.SaveChangesAsync(acceptAllChangesOnSuccess,
+                          cancellationToken));
+        }
+
+        private void OnBeforeSaving()
+        {
+            var entries = ChangeTracker.Entries();
+            var utcNow = DateTime.Now;
+
+            foreach (var entry in entries)
+            {
+                // for entities that inherit from BaseEntity,
+                // set UpdatedOn / CreatedOn appropriately
+                if (entry.Entity is DatetimeEntity trackable)
+                {
+                    switch (entry.State)
+                    {
+                        case EntityState.Modified:
+                            // set the updated date to "now"
+                            trackable.UpdatedDate = utcNow;
+
+                            // mark property as "don't touch"
+                            // we don't want to update on a Modify operation
+                            entry.Property("CreatedDate").IsModified = false;
+                            break;
+
+                        case EntityState.Added:
+                            // set both updated and created date to "now"
+                            trackable.CreatedDate = utcNow;
+                            trackable.UpdatedDate = utcNow;
+                            break;
+                    }
+                }
+            }
         }
         public virtual DbSet<AuditLog> AuditLogs { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
@@ -49,7 +97,7 @@ namespace InventoryManagement.Data
 
                 entity.Property(e => e.ContactName).HasMaxLength(250);
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+                //entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.PhoneNumber)
                     .HasMaxLength(20)
@@ -78,14 +126,14 @@ namespace InventoryManagement.Data
 
                 entity.Property(e => e.CategoryName).HasMaxLength(250);
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+                //entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
             });
 
             builder.Entity<Customer>(entity =>
             {
                 entity.ToTable("Customer");
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+               // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CustomerAddress).HasMaxLength(250);
 
@@ -114,7 +162,7 @@ namespace InventoryManagement.Data
                 entity.Property(e => e.EmployeeId).HasMaxLength(450);
                 entity.ToTable("EmployeeRole");
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+                //entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.Employee)
                     .WithMany()
@@ -135,7 +183,7 @@ namespace InventoryManagement.Data
 
                 entity.ToTable("EmployeeWareHouse");
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+               // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.Employee)
                     .WithMany()
@@ -176,7 +224,7 @@ namespace InventoryManagement.Data
             {
                 entity.ToTable("Product");
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+               // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Length).HasMaxLength(100);
 
@@ -201,7 +249,7 @@ namespace InventoryManagement.Data
 
                 entity.ToTable("PurchaseDetail");
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+                //entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Poid).HasColumnName("POId");
 
@@ -224,7 +272,7 @@ namespace InventoryManagement.Data
 
                 entity.Property(e => e.ContactName).HasMaxLength(250);
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+               // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.PhoneNumber)
                     .HasMaxLength(20)
@@ -247,7 +295,7 @@ namespace InventoryManagement.Data
 
             builder.Entity<Role>(entity =>
             {
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+                //entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.RoleName).HasMaxLength(250);
             });
@@ -258,7 +306,7 @@ namespace InventoryManagement.Data
 
                 entity.ToTable("RoleFunction");
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+               // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.Function)
                     .WithMany()
@@ -276,7 +324,7 @@ namespace InventoryManagement.Data
             {
                 entity.ToTable("SaleOrder");
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+               // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Sotype)
                     .HasMaxLength(50)
@@ -299,7 +347,7 @@ namespace InventoryManagement.Data
 
                 entity.ToTable("SaleOrderDetail");
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+                //entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Soid).HasColumnName("SOId");
 
@@ -320,7 +368,7 @@ namespace InventoryManagement.Data
             {
                 entity.ToTable("Supplier");
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+                //entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CustomerName).HasMaxLength(250);
 
@@ -337,7 +385,7 @@ namespace InventoryManagement.Data
             {
                 entity.ToTable("Unit");
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+               // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.UnitName).HasMaxLength(250);
             });
@@ -346,7 +394,7 @@ namespace InventoryManagement.Data
             {
                 entity.ToTable("Warehouse");
 
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+                //entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CustomerName).HasMaxLength(250);
 

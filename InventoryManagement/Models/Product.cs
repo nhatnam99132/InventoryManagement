@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace InventoryManagement.Models
 {
-    public partial class Product
+    public partial class Product : DatetimeEntity
     {
         public Product()
         {
@@ -18,10 +18,7 @@ namespace InventoryManagement.Models
         public int? CategoryId { get; set; }
         public string Length { get; set; }
         public string Width { get; set; }
-        public int? CreatedBy { get; set; }
-        public DateTime? CreatedDate { get; set; }
-        public int? UpdatedBy { get; set; }
-        public DateTime? UpdatedDate { get; set; }
+     
 
         public virtual Category Category { get; set; }
         public virtual Unit Unit { get; set; }
