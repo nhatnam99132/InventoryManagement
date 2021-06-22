@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using InventoryManagement.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using InventoryManagement.Models;
+using System.Threading;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace InventoryManagement.Data
 {
@@ -133,7 +133,7 @@ namespace InventoryManagement.Data
             {
                 entity.ToTable("Customer");
 
-               // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+                // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CustomerAddress).HasMaxLength(250);
 
@@ -183,7 +183,7 @@ namespace InventoryManagement.Data
 
                 entity.ToTable("EmployeeWareHouse");
 
-               // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+                // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.Employee)
                     .WithMany()
@@ -224,7 +224,7 @@ namespace InventoryManagement.Data
             {
                 entity.ToTable("Product");
 
-               // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+                // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Length).HasMaxLength(100);
 
@@ -272,7 +272,7 @@ namespace InventoryManagement.Data
 
                 entity.Property(e => e.ContactName).HasMaxLength(250);
 
-               // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+                // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.PhoneNumber)
                     .HasMaxLength(20)
@@ -306,7 +306,7 @@ namespace InventoryManagement.Data
 
                 entity.ToTable("RoleFunction");
 
-               // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+                // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.Function)
                     .WithMany()
@@ -324,7 +324,7 @@ namespace InventoryManagement.Data
             {
                 entity.ToTable("SaleOrder");
 
-               // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+                // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Sotype)
                     .HasMaxLength(50)
@@ -385,7 +385,7 @@ namespace InventoryManagement.Data
             {
                 entity.ToTable("Unit");
 
-               // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+                // entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.UnitName).HasMaxLength(250);
             });
@@ -407,10 +407,11 @@ namespace InventoryManagement.Data
                 entity.Property(e => e.WarehouseName).HasMaxLength(250);
             });
 
-           // OnModelCreatingPartial(builder);
+            // OnModelCreatingPartial(builder);
         }
 
-       // partial void OnModelCreatingPartial(ModelBuilder builder);
+        // partial void OnModelCreatingPartial(ModelBuilder builder);
     }
 }
+
 

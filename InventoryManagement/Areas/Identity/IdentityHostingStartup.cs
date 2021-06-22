@@ -1,5 +1,6 @@
 ﻿using System;
 using InventoryManagement.Data;
+//using InventoryManagement.Data;
 using InventoryManagement.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -15,10 +16,11 @@ namespace InventoryManagement.Areas.Identity
     {
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices((context, services) => {
+            builder.ConfigureServices((context, services) =>
+            {
                 services.AddDbContext<InventoryManagementContext>(options =>
                     options.UseSqlServer(
-                        context.Configuration.GetConnectionString("InventoryManagementContextConnection")));
+                        context.Configuration.GetConnectionString("InventoryManagementContext")));
 
                 services.AddDefaultIdentity<Employee>(options => options.SignIn.RequireConfirmedAccount = false)
                     .AddEntityFrameworkStores<InventoryManagementContext>();
