@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
 namespace InventoryManagement.Models
 {
-    public partial class Category
+    public partial class Category : DatetimeEntity
     {
         public Category()
         {
@@ -13,12 +14,10 @@ namespace InventoryManagement.Models
         }
 
         public int Id { get; set; }
+        [Required]
+        [Display(Name = "Category Name")]
         public string CategoryName { get; set; }
-        public int? CreatedBy { get; set; }
-        public DateTime? CreatedDate { get; set; }
-        public int? UpdatedBy { get; set; }
-        public DateTime? UpdatedDate { get; set; }
-
+     
         public virtual ICollection<Product> Products { get; set; }
     }
 }

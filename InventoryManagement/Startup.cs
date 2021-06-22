@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using InventoryManagement.Data;
 
 namespace InventoryManagement
 {
@@ -25,6 +27,9 @@ namespace InventoryManagement
         {
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddDbContext<InventoryManagementContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("InventoryManagementContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

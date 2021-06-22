@@ -61,6 +61,16 @@ namespace InventoryManagement.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [Display(Name = "Name")]
+            public string EmployeeName { get; set; }
+            [Display(Name = "Address")]
+            public string EmployeeAddress { get; set; }
+            [DataType(DataType.Date)]
+            [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+            [Display(Name = "Birthday")]
+            public DateTime Birthday { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -75,7 +85,13 @@ namespace InventoryManagement.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new Employee { UserName = Input.Email, Email = Input.Email };
+                var user = new Employee { 
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    EmployeeName = Input.EmployeeName,
+                    EmployeeAddress = Input.EmployeeAddress,
+                    Birthday = Input.Birthday,
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

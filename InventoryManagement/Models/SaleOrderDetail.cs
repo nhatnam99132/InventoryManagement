@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace InventoryManagement.Models
 {
-    public partial class SaleOrderDetail
+    public partial class SaleOrderDetail : DatetimeEntity
     {
         public int? Soid { get; set; }
         public int? ProductId { get; set; }
@@ -15,10 +15,7 @@ namespace InventoryManagement.Models
         public double? Vat { get; set; }
         public double? PriceAfterDiscount { get; set; }
         public double? TotalAmount { get; set; }
-        public int? CreatedBy { get; set; }
-        public DateTime? CreatedDate { get; set; }
-        public int? UpdatedBy { get; set; }
-        public DateTime? UpdatedDate { get; set; }
+
 
         public virtual Product Product { get; set; }
         public virtual SaleOrder So { get; set; }
