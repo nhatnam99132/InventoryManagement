@@ -1,16 +1,16 @@
-﻿@model PaginatedList1<InventoryManagement.Models.Warehouse>
+﻿@model PaginatedList1<InventoryManagement.Models.Supplier>
 @*@model InventoryManagement.Models.ProductCategoryViewModel*@
 
 @{
-    ViewData["Title"] = "Warehouse Manager";
+    ViewData["Title"] = "Supplier Manager";
 }
 
-<h1>Warehouse</h1>
+<h1>Supplier</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<form asp-controller="Warehouse" asp-action="Index" method="get">
+<form asp-controller="Supplier" asp-action="Index" method="get">
     <p>
         Search by name: <input type="text" name="SearchString" />
         <input type="submit" value="Filter" />
@@ -20,7 +20,7 @@
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Warehouse Name</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Supplier Name</a>
             </th>
             <th>
                 Address
@@ -42,10 +42,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.WarehouseName)
+                    @Html.DisplayFor(modelItem => item.SupplierName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.WarehouseAddress)
+                    @Html.DisplayFor(modelItem => item.SupplierAddress)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PhoneNumber)

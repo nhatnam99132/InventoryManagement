@@ -60,10 +60,10 @@ namespace InventoryManagement.Controllers
                     products = products.OrderByDescending(s => s.ProductName);
                     break;
                 case "Date":
-                    products = products.OrderBy(s => s.CreatedBy);
+                    products = products.OrderBy(s => s.CreatedDate);
                     break;
                 case "date_desc":
-                    products = products.OrderByDescending(s => s.CreatedBy);
+                    products = products.OrderByDescending(s => s.CreatedDate);
                     break;
                 
                 default:
@@ -73,7 +73,7 @@ namespace InventoryManagement.Controllers
             IQueryable<string> cataQuery = from m in _context.Categories
                                                              orderby m.CategoryName
                                                              select m.CategoryName;
-            ViewData["Categories"] = cataQuery;
+            //ViewData["Categories"] = cataQuery;
             int pageSize = 10;
             SelectList Categories = new SelectList(await cataQuery.Distinct().ToListAsync());
             //var productCategoryVM = new ProductCategoryViewModel

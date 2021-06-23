@@ -1,7 +1,6 @@
 ﻿using InventoryManagement.Data;
 using InventoryManagement.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,28 +9,28 @@ using System.Threading.Tasks;
 
 namespace InventoryManagement.Controllers
 {
-    public class WarehouseController : Controller
+    public class SupplierController : Controller
     {
         private readonly InventoryManagementContext _context;
 
-        public WarehouseController(InventoryManagementContext context)
+        public SupplierController(InventoryManagementContext context)
         {
             _context = context;
         }
 
-        // GET: Warehouses
+        // GET: Suppliers
         //public async Task<IActionResult> Index(string searchString)
         //{
-        //    var warehouses = from m in _context.Warehouses
+        //    var suppliers = from m in _context.Suppliers
         //                     select m;
 
         //    if (!String.IsNullOrEmpty(searchString))
         //    {
-        //        warehouses = warehouses.Where(s => s.WarehouseName.Contains(searchString));
+        //        suppliers = suppliers.Where(s => s.SupplierName.Contains(searchString));
         //    }
 
-        //    return View(await warehouses.ToListAsync());
-        //    //return View(await _context.Warehouses.ToListAsync());
+        //    return View(await suppliers.ToListAsync());
+        //    //return View(await _context.Suppliers.ToListAsync());
         //}
         public async Task<IActionResult> Index(
      string sortOrder,
@@ -50,39 +49,39 @@ namespace InventoryManagement.Controllers
 
             ViewData["CurrentFilter"] = searchString;
 
-            var warehouses = from s in _context.Warehouses
-                           select s;
+            var suppliers = from s in _context.Suppliers
+                             select s;
             if (!String.IsNullOrEmpty(searchString))
             {
-                warehouses = warehouses.Where(s => s.WarehouseName.Contains(searchString));
+                suppliers = suppliers.Where(s => s.SupplierName.Contains(searchString));
             }
 
             switch (sortOrder)
             {
                 case "name_desc":
-                    warehouses = warehouses.OrderByDescending(s => s.WarehouseName);
+                    suppliers = suppliers.OrderByDescending(s => s.SupplierName);
                     break;
                 case "Date":
-                    warehouses = warehouses.OrderBy(s => s.CreatedDate);
+                    suppliers = suppliers.OrderBy(s => s.CreatedDate);
                     break;
                 case "date_desc":
-                    warehouses = warehouses.OrderByDescending(s => s.CreatedDate);
+                    suppliers = suppliers.OrderByDescending(s => s.CreatedDate);
                     break;
 
                 default:
-                    warehouses = warehouses.OrderBy(s => s.WarehouseName);
+                    suppliers = suppliers.OrderBy(s => s.SupplierName);
                     break;
             }
-            
-            int pageSize = 10;
-            
-         
 
-            return View(await PaginatedList1<Warehouse>.CreateAsync(warehouses.AsNoTracking(), pageNumber ?? 1, pageSize));
+            int pageSize = 10;
+
+
+
+            return View(await PaginatedList1<Supplier>.CreateAsync(suppliers.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
 
-        // GET: Warehouses/Details/5
+        // GET: Suppliers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -90,7 +89,7 @@ namespace InventoryManagement.Controllers
                 return NotFound();
             }
 
-            var unit = await _context.Warehouses
+            var unit = await _context.Suppliers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (unit == null)
             {
@@ -100,29 +99,29 @@ namespace InventoryManagement.Controllers
             return View(unit);
         }
 
-        // GET: Warehouses/Create
+        // GET: Suppliers/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Warehouses/Create
+        // POST: Suppliers/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,WarehouseName,WarehouseAddress,PhoneNumber,CustomerName,CreatedDate,UpdatedDate,CreatedBy,UpdatedBy")] Warehouse warehouse)
+        public async Task<IActionResult> Create([Bind("Id,SupplierName,SupplierAddress,CustomerName,PhoneNumber,CreatedDate,UpdatedDate,CreatedBy,UpdatedBy")] Supplier supplier)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(warehouse);
+                _context.Add(supplier);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(warehouse);
+            return View(supplier);
         }
 
-        // GET: Warehouses/Edit/5
+        // GET: Suppliers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -130,7 +129,7 @@ namespace InventoryManagement.Controllers
                 return NotFound();
             }
 
-            var unit = await _context.Warehouses.FindAsync(id);
+            var unit = await _context.Suppliers.FindAsync(id);
             if (unit == null)
             {
                 return NotFound();
@@ -138,14 +137,14 @@ namespace InventoryManagement.Controllers
             return View(unit);
         }
 
-        // POST: Warehouses/Edit/5
+        // POST: Suppliers/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,WarehouseName,WarehouseAddress,PhoneNumber,CustomerName,CreatedDate,UpdatedDate,CreatedBy,UpdatedBy")] Warehouse warehouse)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,SupplierName,SupplierAddress,CustomerName,PhoneNumber,CreatedDate,UpdatedDate,CreatedBy,UpdatedBy")] Supplier supplier)
         {
-            if (id != warehouse.Id)
+            if (id != supplier.Id)
             {
                 return NotFound();
             }
@@ -154,12 +153,12 @@ namespace InventoryManagement.Controllers
             {
                 try
                 {
-                    _context.Update(warehouse);
+                    _context.Update(supplier);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!unitExists(warehouse.Id))
+                    if (!supplierExists(supplier.Id))
                     {
                         return NotFound();
                     }
@@ -170,10 +169,10 @@ namespace InventoryManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(warehouse);
+            return View(supplier);
         }
 
-        // GET: Warehouses/Delete/5
+        // GET: Suppliers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -181,7 +180,7 @@ namespace InventoryManagement.Controllers
                 return NotFound();
             }
 
-            var unit = await _context.Warehouses
+            var unit = await _context.Suppliers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (unit == null)
             {
@@ -191,20 +190,20 @@ namespace InventoryManagement.Controllers
             return View(unit);
         }
 
-        // POST: Warehouses/Delete/5
+        // POST: Suppliers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var unit = await _context.Warehouses.FindAsync(id);
-            _context.Warehouses.Remove(unit);
+            var unit = await _context.Suppliers.FindAsync(id);
+            _context.Suppliers.Remove(unit);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool unitExists(int id)
+        private bool supplierExists(int id)
         {
-            return _context.Warehouses.Any(e => e.Id == id);
+            return _context.Suppliers.Any(e => e.Id == id);
         }
     }
 }
