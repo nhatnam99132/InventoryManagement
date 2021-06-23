@@ -115,11 +115,16 @@ namespace InventoryManagement.Controllers
             var cate = await _context.Categories.OrderBy(t => t.CategoryName).ToListAsync();
             var unit = await _context.Units.OrderBy(t => t.UnitName).ToListAsync();
 
+            var productCategoryVM = new ProductCategoryViewModel
+            {
+                Units = new SelectList(unit, "Id", "UnitName"),
+                Categories = new SelectList(cate, "Id", "CategoryName"),
+            };
 
 
-            ViewData["Unit"] = new SelectList(unit, "Id", "UnitName");
-            ViewData["Category"] = new SelectList(cate, "Id", "CategoryName");
-            return View();
+            //ViewData["Unit"] = new SelectList(unit, "Id", "UnitName");
+            //ViewData["Category"] = new SelectList(cate, "Id", "CategoryName");
+            return View(productCategoryVM);
         }
 
         // POST: Categories/Create
@@ -155,7 +160,15 @@ namespace InventoryManagement.Controllers
             {
                 return NotFound();
             }
-            return View(product);
+            var cate = await _context.Categories.OrderBy(t => t.CategoryName).ToListAsync();
+            var unit = await _context.Units.OrderBy(t => t.UnitName).ToListAsync();
+            var productCategoryVM = new ProductCategoryViewModel
+            {
+                Units = new SelectList(unit, "Id", "UnitName"),
+                Categories = new SelectList(cate, "Id", "CategoryName"),
+                Product = product
+            };
+            return View(productCategoryVM);
         }
 
         // POST: Categories/Edit/5
