@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using InventoryManagement.Models
+@inject SignInManager<Employee> SignInManager
+@inject UserManager<Employee> UserManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -25,42 +29,44 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         @*<li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
-        </li>*@
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Product Manager
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Units" asp-action="Index">Units</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Warehouse Manager
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Warehouse" asp-action="Index">Warehouse</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Inventory" asp-action="Index">Inventory</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="SaleOrder" asp-action="Index">Sale Order</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="PurchaseOrder" asp-action="Index">Purchase Order</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Supplier Manager
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Supplier" asp-action="Index">Supplier</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="AuditLog" asp-action="Index">Audit Log</a>
-                                <a class="dropdown-item text-dark" asp-area="" asp-controller="PurchaseOrder" asp-action="Index">Purchase Order</a>
-                            </div>
-                        </li>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+                            </li>*@
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Product Manager
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Units" asp-action="Index">Units</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Warehouse Manager
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Warehouse" asp-action="Index">Warehouse</a>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Inventory" asp-action="Index">Inventory</a>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="SaleOrder" asp-action="Index">Sale Order</a>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="PurchaseOrder" asp-action="Index">Purchase Order</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Supplier Manager
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Supplier" asp-action="Index">Supplier</a>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="AuditLog" asp-action="Index">Audit Log</a>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="PurchaseOrder" asp-action="Index">Purchase Order</a>
+                                </div>
+                            </li>
+                        }
                     </ul>
-                  
+
                     <partial name="_LoginPartial" />
                 </div>
             </div>

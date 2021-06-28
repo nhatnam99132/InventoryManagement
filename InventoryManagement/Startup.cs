@@ -49,9 +49,10 @@ namespace InventoryManagement
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseAuthorization();
+            //Authen phai dung truoc AUthor
             app.UseAuthentication();
+            app.UseAuthorization();
+           
 
             app.UseEndpoints(endpoints =>
             {
