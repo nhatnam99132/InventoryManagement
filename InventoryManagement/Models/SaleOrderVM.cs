@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace InventoryManagement.Models
 {
-    public class ProductCategoryViewModel
+    public class SaleOrderVM
     {
-        public Product Product { get; set; }
-        public SelectList Categories { get; set; }
-        public SelectList Units { get; set; }
-
+        public SaleOrder SaleOrder { get; set; }
+        public SelectList Customers { get; set; }
+        public SelectList Warehouses { get; set; }
     }
 }

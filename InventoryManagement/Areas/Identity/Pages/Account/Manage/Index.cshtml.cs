@@ -36,18 +36,26 @@ namespace InventoryManagement.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+            [Display(Name = "Address")]
+            public string Address { get; set; }
+            [Display(Name = "Birthdate")]
+            [DataType(DataType.Date)]
+            public DateTime Birthdate { get; set; }
         }
 
         private async Task LoadAsync(Employee user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
+            var address = "";
+            var birthdate = DateTime.Now;
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Address = address,
+                Birthdate = birthdate
             };
         }
 
