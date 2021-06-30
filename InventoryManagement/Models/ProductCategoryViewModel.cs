@@ -11,7 +11,6 @@ namespace InventoryManagement.Models
         public Product Product { get; set; }
         public SelectList Categories { get; set; }
         public SelectList Units { get; set; }
-        public string ProductCategory { get; set; }
-        public string SearchString { get; set; }
+
     }
 }

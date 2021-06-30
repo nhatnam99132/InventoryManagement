@@ -1,0 +1,184 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using InventoryManagement.Models
+@inject SignInManager<Employee> SignInManager
+@inject UserManager<Employee> UserManager
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Inventory Management</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @*<link rel="stylesheet" href="~/css/site.css" />*@
+
+    <link rel="shortcut icon" href="~/userLayout/assets/images/gt_favicon.png">
+    @*<link rel="stylesheet" href="~/userLayout/assets/css/bootstrap.min.css">*@
+   
+    <link rel="stylesheet" href="~/userLayout/assets/css/font-awesome.min.css">
+
+    <!-- Custom styles for our template -->
+    @*<link rel="stylesheet" href="~/userLayout/assets/css/bootstrap-theme.css" media="screen">*@
+    <link rel="stylesheet" href="~/userLayout/assets/css/site.css">
+</head>
+<body class="home">
+
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-primary border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <!-- Button for smallest screens -->
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand"><img src="~/userLayout/assets/images/logo1.png" style="height:50px; width:50px;" alt="Inventory Management"></a>
+                </div>
+                
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        @*<li class="nav-item">
+            <a class="nav-link " asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+        </li>*@
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Product Manager
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Units" asp-action="Index">Units</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Warehouse Manager
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Warehouse" asp-action="Index">Warehouse</a>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Inventory" asp-action="Index">Inventory</a>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="SaleOrder" asp-action="Index">Sale Order</a>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="PurchaseOrder" asp-action="Index">Purchase Order</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Supplier Manager
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Supplier" asp-action="Index">Supplier</a>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="AuditLog" asp-action="Index">Audit Log</a>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="PurchaseOrder" asp-action="Index">Purchase Order</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Customers Manager
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="Customer" asp-action="Index">Customers</a>
+                                    <a class="dropdown-item text-dark" asp-area="" asp-controller="SaleOrder" asp-action="Index">SaleOrder</a>
+                                
+                                </div>
+                            </li>
+                        }
+                    </ul>
+
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer id="footer" class="top-space">
+
+        <div class="footer1">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-md-3 widget">
+                        <h3 class="widget-title">Contact</h3>
+                        <div class="widget-body text-light">
+                            <p>
+                                +234 23 9873237<br>
+                                <a href="mailto:#">some.email@somewhere.com</a><br>
+                                <br>
+                                234 Hidden Pond Road, Ashland City, TN 37015
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 widget">
+                        <h3 class="widget-title">Follow me</h3>
+                        <div class="widget-body">
+                            <p class="follow-me-icons">
+                                <a href=""><i class="fa fa-twitter fa-2"></i></a>
+                                <a href=""><i class="fa fa-dribbble fa-2"></i></a>
+                                <a href=""><i class="fa fa-github fa-2"></i></a>
+                                <a href=""><i class="fa fa-facebook fa-2"></i></a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 widget">
+                        <h3 class="widget-title">Text widget</h3>
+                        <div class="widget-body text-light">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi, dolores, quibusdam architecto voluptatem amet fugiat nesciunt placeat provident cumque accusamus itaque voluptate modi quidem dolore optio velit hic iusto vero praesentium repellat commodi ad id expedita cupiditate repellendus possimus unde?</p>
+                            <p>Eius consequatur nihil quibusdam! Laborum, rerum, quis, inventore ipsa autem repellat provident assumenda labore soluta minima alias temporibus facere distinctio quas adipisci nam sunt explicabo officia tenetur at ea quos doloribus dolorum voluptate reprehenderit architecto sint libero illo et hic.</p>
+                        </div>
+                    </div>
+
+                </div> <!-- /row of widgets -->
+            </div>
+        </div>
+
+        <div class="footer2">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-md-6 widget">
+                        <div class="widget-body">
+                            <p class="simplenav">
+                                <a href="#">Home</a> |
+                                <a href="#">About</a> |
+                                <a href="#">Sidebar</a> |
+                                <a href="#">Contact</a> |
+                                <b><a href="#">Sign up</a></b>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 widget">
+                        <div class="widget-body">
+                            <p class="text-right text-light">
+                                Copyright &copy; 2014, Your name. Designed by <a href="#" rel="designer">gettemplate</a>
+                            </p>
+                        </div>
+                    </div>
+
+                </div> <!-- /row of widgets -->
+            </div>
+        </div>
+
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/userLayout/assets/js/headroom.min.js"></script>
+    <script src="~/userLayout/assets/js/jQuery.headroom.min.js"></script>
+    <script src="~/userLayout/assets/js/template.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
