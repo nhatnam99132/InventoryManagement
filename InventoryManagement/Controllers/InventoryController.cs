@@ -92,15 +92,15 @@ namespace InventoryManagement.Controllers
                 return NotFound();
             }
 
-            var unit = await _context.Inventories
-                .Include(d => d.Warehouse).Include(d => d.Product).ThenInclude(d => d.Category).AsNoTracking()
-                .FirstOrDefaultAsync(m => m.ProductId == id);
-            if (unit == null)
+            var inventory = await _context.Inventories
+                .Include(d => d.Warehouse).Include(d => d.Product).ThenInclude(d => d.Category).Include(d => d.Product).ThenInclude(d => d.Unit).AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (inventory == null)
             {
                 return NotFound();
             }
 
-            return View(unit);
+            return View(inventory);
         }
 
         // GET: Inventories/Create
@@ -122,7 +122,7 @@ namespace InventoryManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,WarehouseId,Quantity")] Inventory inventory)
+        public async Task<IActionResult> Create([Bind("Id,WarehouseId,ProductId,Quantity")] Inventory inventory)
         {
             if (ModelState.IsValid)
             {
@@ -141,8 +141,8 @@ namespace InventoryManagement.Controllers
                 return NotFound();
             }
 
-            var unit = await _context.Inventories.Include(d => d.Warehouse).Include(d => d.Product).ThenInclude(d => d.Category).FirstOrDefaultAsync(m => m.ProductId == id);
-            if (unit == null)
+            var inventory = await _context.Inventories.Include(d => d.Warehouse).Include(d => d.Product).ThenInclude(d => d.Category).Include(d => d.Product).ThenInclude(d => d.Unit).AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
+            if (inventory == null)
             {
                 return NotFound();
             }
@@ -153,7 +153,7 @@ namespace InventoryManagement.Controllers
             {
                 Products = new SelectList(products, "Id", "ProductName"),
                 Warehouses = new SelectList(warehouses, "Id", "WarehouseName"),
-                Inventory = unit
+                Inventory = inventory
             };
             return View(inventoryVM);
         }
@@ -163,9 +163,9 @@ namespace InventoryManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductId,WarehouseId,Quantity")] Inventory inventory)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,WarehouseId,ProductId,Quantity")] Inventory inventory)
         {
-            if (id != inventory.ProductId)
+            if (id != inventory.Id)
             {
                 return NotFound();
             }
@@ -179,7 +179,7 @@ namespace InventoryManagement.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!unitExists(inventory.ProductId))
+                    if (!inventoryExists(inventory.Id))
                     {
                         return NotFound();
                     }
@@ -193,38 +193,38 @@ namespace InventoryManagement.Controllers
             return View(inventory);
         }
 
-        //// GET: Inventories/Delete/5
-        // public async Task<IActionResult> Delete(int? id)
-        // {
-        //     if (id == null)
-        //     {
-        //         return NotFound();
-        //     }
-
-        //     var unit = await _context.Inventories.Include(d => d.Warehouse).Include(d => d.Product).ThenInclude(d => d.Category)
-        //         .FirstOrDefaultAsync(m => m.Id == id);
-        //     if (unit == null)
-        //     {
-        //         return NotFound();
-        //     }
-
-        //     return View(unit);
-        // }
-
-        // // POST: Inventories/Delete/5
-        // [HttpPost, ActionName("Delete")]
-        // [ValidateAntiForgeryToken]
-        // public async Task<IActionResult> DeleteConfirmed(int id)
-        // {
-        //     var unit = await _context.Inventories.Include(d => d.Warehouse).Include(d => d.Product).ThenInclude(d => d.Category).FindAsync(id);
-        //     _context.Inventories.Remove(unit);
-        //     await _context.SaveChangesAsync();
-        //     return RedirectToAction(nameof(Index));
-        // }
-
-        private bool unitExists(int? id)
+        // GET: Inventories/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
-            return _context.Inventories.Any(e => e.ProductId == id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var inventory = await _context.Inventories.Include(d => d.Warehouse).Include(d => d.Product).ThenInclude(d => d.Category).Include(d => d.Product).ThenInclude(d => d.Unit).AsNoTracking()
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (inventory == null)
+            {
+                return NotFound();
+            }
+
+            return View(inventory);
+        }
+
+        // POST: Inventories/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var inventory = await _context.Inventories.FirstOrDefaultAsync(d => d.Id == id);
+            _context.Inventories.Remove(inventory);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool inventoryExists(int id)
+        {
+            return _context.Inventories.Any(e => e.Id == id);
         }
     }
 }

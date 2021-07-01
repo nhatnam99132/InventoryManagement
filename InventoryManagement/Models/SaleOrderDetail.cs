@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -7,6 +8,7 @@ namespace InventoryManagement.Models
 {
     public partial class SaleOrderDetail : DatetimeEntity
     {
+        public int Id { get; set; }
         public int? Soid { get; set; }
         public int? ProductId { get; set; }
         public int? Quantity { get; set; }

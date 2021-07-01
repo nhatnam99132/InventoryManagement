@@ -12,20 +12,19 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Inventory.ProductId" />
-            <div class="form-group">
-                <label asp-for="Inventory.ProductId" class="control-label"></label>
-                <select class="form-control" asp-for="Inventory.ProductId" asp-items="Model.Products">
-                    <option value="">---- Select Product -----</option>
-                </select>
-                <span asp-validation-for="Inventory.ProductId" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="Inventory.WarehouseId" class="control-label"></label>
                 <select class="form-control" asp-for="Inventory.WarehouseId" asp-items="Model.Warehouses">
                     <option value="">---- Select Warehouse -----</option>
                 </select>
                 <span asp-validation-for="Inventory.WarehouseId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Inventory.ProductId" class="control-label"></label>
+                <select class="form-control" asp-for="Inventory.ProductId" asp-items="Model.Products">
+                    <option value="">---- Select Product -----</option>
+                </select>
+                <span asp-validation-for="Inventory.ProductId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Inventory.Quantity" class="control-label"></label>

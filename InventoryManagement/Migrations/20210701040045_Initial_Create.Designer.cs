@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryManagement.Migrations
 {
     [DbContext(typeof(InventoryManagementContext))]
-    [Migration("20210622010636_Create_DatetimeEntity")]
-    partial class Create_DatetimeEntity
+    [Migration("20210701040045_Initial_Create")]
+    partial class Initial_Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,7 +19,7 @@ namespace InventoryManagement.Migrations
             modelBuilder
                 .HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("InventoryManagement.Models.AuditLog", b =>
@@ -104,6 +104,7 @@ namespace InventoryManagement.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CategoryName")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
@@ -138,14 +139,17 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CustomerAddress")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("CustomerName")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .IsUnicode(false)
                         .HasColumnType("varchar(20)");
@@ -247,6 +251,11 @@ namespace InventoryManagement.Migrations
 
             modelBuilder.Entity("InventoryManagement.Models.EmployeeRole", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
@@ -266,6 +275,8 @@ namespace InventoryManagement.Migrations
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("EmployeeId");
 
                     b.HasIndex("RoleId");
@@ -275,6 +286,11 @@ namespace InventoryManagement.Migrations
 
             modelBuilder.Entity("InventoryManagement.Models.EmployeeWareHouse", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
@@ -293,6 +309,8 @@ namespace InventoryManagement.Migrations
 
                     b.Property<int?>("WarehouseId")
                         .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
 
@@ -333,14 +351,24 @@ namespace InventoryManagement.Migrations
 
             modelBuilder.Entity("InventoryManagement.Models.Inventory", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int?>("ProductId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("Quantity")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("WarehouseId")
+                        .IsRequired()
                         .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
@@ -357,6 +385,7 @@ namespace InventoryManagement.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("CategoryId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("CreatedBy")
@@ -366,14 +395,17 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Length")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ProductName")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<int?>("UnitId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("UpdatedBy")
@@ -383,6 +415,7 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Width")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -397,6 +430,11 @@ namespace InventoryManagement.Migrations
 
             modelBuilder.Entity("InventoryManagement.Models.PurchaseDetail", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
@@ -434,6 +472,8 @@ namespace InventoryManagement.Migrations
                     b.Property<double?>("Vat")
                         .HasColumnType("float")
                         .HasColumnName("VAT");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("Poid");
 
@@ -520,6 +560,11 @@ namespace InventoryManagement.Migrations
 
             modelBuilder.Entity("InventoryManagement.Models.RoleFunction", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
@@ -537,6 +582,8 @@ namespace InventoryManagement.Migrations
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("FunctionId");
 
@@ -559,9 +606,11 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("CustomerId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Sotype")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("SOType");
@@ -573,6 +622,7 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("WarehouseId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -586,6 +636,11 @@ namespace InventoryManagement.Migrations
 
             modelBuilder.Entity("InventoryManagement.Models.SaleOrderDetail", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
@@ -624,6 +679,8 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("float")
                         .HasColumnName("VAT");
 
+                    b.HasKey("Id");
+
                     b.HasIndex("ProductId");
 
                     b.HasIndex("Soid");
@@ -645,19 +702,23 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CustomerName")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .IsUnicode(false)
                         .HasColumnType("varchar(20)");
 
                     b.Property<string>("SupplierAddress")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("SupplierName")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
@@ -686,6 +747,7 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UnitName")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
@@ -714,10 +776,12 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CustomerName")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .IsUnicode(false)
                         .HasColumnType("varchar(20)");
@@ -729,10 +793,12 @@ namespace InventoryManagement.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("WarehouseAddress")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("WarehouseName")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
@@ -932,12 +998,16 @@ namespace InventoryManagement.Migrations
                     b.HasOne("InventoryManagement.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .HasConstraintName("FK_Inventory_Product");
+                        .HasConstraintName("FK_Inventory_Product")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("InventoryManagement.Models.Warehouse", "Warehouse")
                         .WithMany()
                         .HasForeignKey("WarehouseId")
-                        .HasConstraintName("FK_Inventory_Warehouse");
+                        .HasConstraintName("FK_Inventory_Warehouse")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Product");
 
@@ -949,12 +1019,16 @@ namespace InventoryManagement.Migrations
                     b.HasOne("InventoryManagement.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .HasConstraintName("FK_Product_Category");
+                        .HasConstraintName("FK_Product_Category")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("InventoryManagement.Models.Unit", "Unit")
                         .WithMany("Products")
                         .HasForeignKey("UnitId")
-                        .HasConstraintName("FK_Product_Unit");
+                        .HasConstraintName("FK_Product_Unit")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
 
@@ -1018,12 +1092,16 @@ namespace InventoryManagement.Migrations
                     b.HasOne("InventoryManagement.Models.Customer", "Customer")
                         .WithMany("SaleOrders")
                         .HasForeignKey("CustomerId")
-                        .HasConstraintName("FK_SaleOrder_Customer");
+                        .HasConstraintName("FK_SaleOrder_Customer")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("InventoryManagement.Models.Warehouse", "Warehouse")
                         .WithMany("SaleOrders")
                         .HasForeignKey("WarehouseId")
-                        .HasConstraintName("FK_SaleOrder_Warehouse");
+                        .HasConstraintName("FK_SaleOrder_Warehouse")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
 
