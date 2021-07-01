@@ -8,8 +8,10 @@
 <h1>Sale Order</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New </a> ||
+    <a asp-area="" asp-controller="SaleOrderDetail" asp-action="Index"> View Sale Order Detail</a>
 </p>
+
 <form asp-controller="SaleOrder" asp-action="Index" method="get">
     <p>
         Search by customer name: <input type="text" name="SearchString" />
