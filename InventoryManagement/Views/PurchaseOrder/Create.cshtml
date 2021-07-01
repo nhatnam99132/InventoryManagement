@@ -1,35 +1,45 @@
-﻿@model InventoryManagement.Models.ViewModel.SaleOrderVM
+﻿@model InventoryManagement.Models.ViewModel.PurchaseOrderVM
 
 @{
-    ViewData["Title"] = "Create Sale Order";
+    ViewData["Title"] = "Create Purchase Order";
 }
 
-<h1>Create Sale Order</h1>
+<h1>Create Purchase Order</h1>
 
-<h4>Customer</h4>
+<h4>Purchase Order</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="SaleOrder.CustomerId" class="control-label"></label>
-                <select class="form-control" asp-for="SaleOrder.CustomerId" asp-items="Model.Customers">
+                <label asp-for="PurchaseOrder.SupplierId" class="control-label"></label>
+                <select class="form-control" asp-for="PurchaseOrder.SupplierId" asp-items="Model.Suppliers">
                     <option value="">---- Select Customer -----</option>
                 </select>
-                <span asp-validation-for="SaleOrder.CustomerId" class="text-danger"></span>
+                <span asp-validation-for="PurchaseOrder.SupplierId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SaleOrder.WarehouseId" class="control-label"></label>
-                <select class="form-control" asp-for="SaleOrder.WarehouseId" asp-items="Model.Warehouses">
+                <label asp-for="PurchaseOrder.WarehouseId" class="control-label"></label>
+                <select class="form-control" asp-for="PurchaseOrder.WarehouseId" asp-items="Model.Warehouses">
                     <option value="">---- Select Warehouse -----</option>
                 </select>
-                <span asp-validation-for="SaleOrder.WarehouseId" class="text-danger"></span>
+                <span asp-validation-for="PurchaseOrder.WarehouseId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SaleOrder.Sotype" class="control-label"></label>
-                <input asp-for="SaleOrder.Sotype" class="form-control" />
-                <span asp-validation-for="SaleOrder.Sotype" class="text-danger"></span>
+                <label asp-for="PurchaseOrder.Potype" class="control-label"></label>
+                <input asp-for="PurchaseOrder.Potype" class="form-control" />
+                <span asp-validation-for="PurchaseOrder.Potype" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PurchaseOrder.ContactName" class="control-label"></label>
+                <input asp-for="PurchaseOrder.ContactName" class="form-control" />
+                <span asp-validation-for="PurchaseOrder.ContactName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PurchaseOrder.PhoneNumber" class="control-label"></label>
+                <input asp-for="PurchaseOrder.PhoneNumber" class="form-control" />
+                <span asp-validation-for="PurchaseOrder.PhoneNumber" class="text-danger"></span>
             </div>
             @*<div class="form-group">
             <label asp-for="CreatedDate" class="control-label"></label>
