@@ -1,5 +1,7 @@
 ﻿using InventoryManagement.Data;
 using InventoryManagement.Models;
+using InventoryManagement.Models.ViewModel;
+using InventoryManagement.PaginatedList;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;

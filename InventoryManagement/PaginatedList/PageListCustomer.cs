@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace InventoryManagement
+namespace InventoryManagement.PaginatedList
 {
     public class PaginatedListCustomer<T> : List<T>
     {

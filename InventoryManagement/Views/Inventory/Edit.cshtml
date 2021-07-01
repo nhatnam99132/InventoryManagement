@@ -1,35 +1,36 @@
-﻿@model InventoryManagement.Models.ViewModel.SaleOrderVM
+﻿@model InventoryManagement.Models.ViewModel.InventoryVM
 
 @{
-    ViewData["Title"] = "Create Customer";
+    ViewData["Title"] = "Edit Inventory";
 }
 
-<h1>Create Customer</h1>
+<h1>Edit Inventory</h1>
 
-<h4>Customer</h4>
+<h4>Inventory</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Inventory.ProductId" />
             <div class="form-group">
-                <label asp-for="SaleOrder.CustomerId" class="control-label"></label>
-                <select class="form-control" asp-for="SaleOrder.CustomerId" asp-items="Model.Customers">
-                    <option value="">---- Select Customer -----</option>
+                <label asp-for="Inventory.ProductId" class="control-label"></label>
+                <select class="form-control" asp-for="Inventory.ProductId" asp-items="Model.Products">
+                    <option value="">---- Select Product -----</option>
                 </select>
-                <span asp-validation-for="SaleOrder.CustomerId" class="text-danger"></span>
+                <span asp-validation-for="Inventory.ProductId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SaleOrder.WarehouseId" class="control-label"></label>
-                <select class="form-control" asp-for="SaleOrder.WarehouseId" asp-items="Model.Warehouses">
+                <label asp-for="Inventory.WarehouseId" class="control-label"></label>
+                <select class="form-control" asp-for="Inventory.WarehouseId" asp-items="Model.Warehouses">
                     <option value="">---- Select Warehouse -----</option>
                 </select>
-                <span asp-validation-for="SaleOrder.WarehouseId" class="text-danger"></span>
+                <span asp-validation-for="Inventory.WarehouseId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SaleOrder.Sotype" class="control-label"></label>
-                <input asp-for="SaleOrder.Sotype" class="form-control" />
-                <span asp-validation-for="SaleOrder.Sotype" class="text-danger"></span>
+                <label asp-for="Inventory.Quantity" class="control-label"></label>
+                <input type="number" asp-for="Inventory.Quantity" class="form-control" />
+                <span asp-validation-for="Inventory.Quantity" class="text-danger"></span>
             </div>
             @*<div class="form-group">
             <label asp-for="CreatedDate" class="control-label"></label>
@@ -52,7 +53,7 @@
             <span asp-validation-for="UpdatedBy" class="text-danger"></span>
         </div>*@
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace InventoryManagement.Models
+namespace InventoryManagement.Models.ViewModel
 {
     public class ProductCategoryViewModel
     {

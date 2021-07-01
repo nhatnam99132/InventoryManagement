@@ -1,20 +1,17 @@
-﻿@model InventoryManagement.PaginatedList.PaginatedList<InventoryManagement.Models.Product>
+﻿@model InventoryManagement.PaginatedList.PageListInventory<InventoryManagement.Models.Inventory>
 @*@model InventoryManagement.Models.ProductCategoryViewModel*@
 
 @{
-    ViewData["Title"] = "Product Manager";
+    ViewData["Title"] = "Inventory Manager";
 }
 
-<h1>Product</h1>
+<h1>Inventory</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<form asp-controller="Products" asp-action="Index" method="get">
+<form asp-controller="Inventory" asp-action="Index" method="get">
     <p>
-        <select asp-for="ProductCategory" asp-items="Model.Categories">
-            <option value="">All</option>
-        </select>
         Search by name: <input type="text" name="SearchString" />
         <input type="submit" value="Filter" />
     </p>
@@ -26,19 +23,13 @@
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Product Name</a>
             </th>
             <th>
-               Unit Name
+                Category
             </th>
             <th>
-                Category Name
+                Warehouse Name
             </th>
             <th>
-               Length
-            </th>
-            <th>
-                Width
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Created Date</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Quantity</a>
             </th>
             <th></th>
         </tr>
@@ -48,29 +39,23 @@
         {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
+                @Html.DisplayFor(modelItem => item.Product.ProductName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Unit.UnitName)
+                @Html.DisplayFor(modelItem => item.Product.Category.CategoryName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                @Html.DisplayFor(modelItem => item.Warehouse.WarehouseName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Length)
+                @Html.DisplayFor(modelItem => item.Quantity)
             </td>
+
             <td>
-                @Html.DisplayFor(modelItem => item.Width)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-           
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+            <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
+            @*<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+        </td>
         </tr>
         }
     </tbody>
