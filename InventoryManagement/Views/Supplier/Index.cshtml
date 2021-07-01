@@ -1,5 +1,5 @@
-﻿@model PaginatedList1<InventoryManagement.Models.Supplier>
-@*@model InventoryManagement.Models.ProductCategoryViewModel*@
+﻿@model InventoryManagement.PaginatedList.PaginatedList1<InventoryManagement.Models.Supplier>
+@*@model Inventor yManagement.Models.ProductCategoryViewModel*@
 
 @{
     ViewData["Title"] = "Supplier Manager";
@@ -12,7 +12,7 @@
 </p>
 <form asp-controller="Supplier" asp-action="Index" method="get">
     <p>
-        Search by name: <input type="text" name="SearchString" />
+        Search by Supplier name: <input type="text" name="SearchString" />
         <input type="submit" value="Filter" />
     </p>
 </form>

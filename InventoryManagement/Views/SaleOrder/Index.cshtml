@@ -1,18 +1,20 @@
-﻿@model PaginatedListSaleOrder<InventoryManagement.Models.SaleOrder>
+﻿@model InventoryManagement.PaginatedList.PaginatedListSaleOrder<InventoryManagement.Models.SaleOrder>
 @*@model InventoryManagement.Models.ProductCategoryViewModel*@
 
 @{
     ViewData["Title"] = "SaleOrder Manager";
 }
 
-<h1>SaleOrder</h1>
+<h1>Sale Order</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New </a> ||
+    <a asp-area="" asp-controller="SaleOrderDetail" asp-action="Index"> View Sale Order Detail</a>
 </p>
+
 <form asp-controller="SaleOrder" asp-action="Index" method="get">
     <p>
-        Search by name: <input type="text" name="SearchString" />
+        Search by customer name: <input type="text" name="SearchString" />
         <input type="submit" value="Filter" />
     </p>
 </form>

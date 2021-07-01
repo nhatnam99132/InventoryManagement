@@ -157,7 +157,7 @@ namespace InventoryManagement.Data
 
             builder.Entity<EmployeeRole>(entity =>
             {
-                entity.HasNoKey();
+                //entity.HasNoKey();
 
                 entity.Property(e => e.EmployeeId).HasMaxLength(450);
                 entity.ToTable("EmployeeRole");
@@ -177,7 +177,7 @@ namespace InventoryManagement.Data
 
             builder.Entity<EmployeeWareHouse>(entity =>
             {
-                entity.HasNoKey();
+                //entity.HasNoKey();
 
                 entity.Property(e => e.EmployeeId).HasMaxLength(450);
 
@@ -205,7 +205,7 @@ namespace InventoryManagement.Data
 
             builder.Entity<Inventory>(entity =>
             {
-                entity.HasNoKey();
+               // entity.HasNoKey();
 
                 entity.ToTable("Inventory");
 
@@ -245,7 +245,7 @@ namespace InventoryManagement.Data
 
             builder.Entity<PurchaseDetail>(entity =>
             {
-                entity.HasNoKey();
+               // entity.HasNoKey();
 
                 entity.ToTable("PurchaseDetail");
 
@@ -302,7 +302,7 @@ namespace InventoryManagement.Data
 
             builder.Entity<RoleFunction>(entity =>
             {
-                entity.HasNoKey();
+                //entity.HasNoKey();
 
                 entity.ToTable("RoleFunction");
 
@@ -343,7 +343,7 @@ namespace InventoryManagement.Data
 
             builder.Entity<SaleOrderDetail>(entity =>
             {
-                entity.HasNoKey();
+                //entity.HasNoKey();
 
                 entity.ToTable("SaleOrderDetail");
 

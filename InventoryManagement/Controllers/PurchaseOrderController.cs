@@ -12,28 +12,28 @@ using System.Threading.Tasks;
 
 namespace InventoryManagement.Controllers
 {
-    public class SaleOrderController : Controller
+    public class PurchaseOrderController : Controller
     {
         private readonly InventoryManagementContext _context;
 
-        public SaleOrderController(InventoryManagementContext context)
+        public PurchaseOrderController(InventoryManagementContext context)
         {
             _context = context;
         }
 
-        // GET: SaleOrders
+        // GET: PurchaseOrders
         //public async Task<IActionResult> Index(string searchString)
         //{
-        //    var saleorders = from m in _context.SaleOrders
+        //    var purchaseorders = from m in _context.PurchaseOrders
         //                     select m;
 
         //    if (!String.IsNullOrEmpty(searchString))
         //    {
-        //        saleorders = saleorders.Where(s => s.CustomerName.Contains(searchString));
+        //        purchaseorders = purchaseorders.Where(s => s.CustomerName.Contains(searchString));
         //    }
 
-        //    return View(await saleorders.ToListAsync());
-        //    //return View(await _context.SaleOrders.ToListAsync());
+        //    return View(await purchaseorders.ToListAsync());
+        //    //return View(await _context.PurchaseOrders.ToListAsync());
         //}
         public async Task<IActionResult> Index(
      string sortOrder,
@@ -52,27 +52,27 @@ namespace InventoryManagement.Controllers
 
             ViewData["CurrentFilter"] = searchString;
 
-            var saleorders = from s in _context.SaleOrders.Include(d => d.Warehouse).Include(d => d.Customer).AsNoTracking()
+            var purchaseorders = from s in _context.PurchaseOrders.Include(d => d.Warehouse).Include(d => d.Supplier).AsNoTracking()
                              select s;
             if (!String.IsNullOrEmpty(searchString))
             {
-                saleorders = saleorders.Where(s => s.Customer.CustomerName.Contains(searchString));
+                purchaseorders = purchaseorders.Where(s => s.Supplier.SupplierName.Contains(searchString));
             }
 
             switch (sortOrder)
             {
                 case "name_desc":
-                    saleorders = saleorders.OrderByDescending(s => s.Customer.CustomerName);
+                    purchaseorders = purchaseorders.OrderByDescending(s => s.Supplier.SupplierName);
                     break;
                 case "Date":
-                    saleorders = saleorders.OrderBy(s => s.CreatedDate);
+                    purchaseorders = purchaseorders.OrderBy(s => s.CreatedDate);
                     break;
                 case "date_desc":
-                    saleorders = saleorders.OrderByDescending(s => s.CreatedDate);
+                    purchaseorders = purchaseorders.OrderByDescending(s => s.CreatedDate);
                     break;
 
                 default:
-                    saleorders = saleorders.OrderBy(s => s.Customer.CustomerName);
+                    purchaseorders = purchaseorders.OrderBy(s => s.Supplier.SupplierName);
                     break;
             }
 
@@ -80,11 +80,11 @@ namespace InventoryManagement.Controllers
 
 
 
-            return View(await PaginatedListSaleOrder<SaleOrder>.CreateAsync(saleorders.AsNoTracking(), pageNumber ?? 1, pageSize));
+            return View(await PaginatedListPurchaseOrder<PurchaseOrder>.CreateAsync(purchaseorders.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
 
-        // GET: SaleOrders/Details/5
+        // GET: PurchaseOrders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -92,48 +92,48 @@ namespace InventoryManagement.Controllers
                 return NotFound();
             }
 
-            var unit = await _context.SaleOrders
-                .Include(d => d.Warehouse).Include(d => d.Customer).AsNoTracking()
+            var purchaseorder = await _context.PurchaseOrders
+                .Include(d => d.Warehouse).Include(d => d.Supplier).AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (unit == null)
+            if (purchaseorder == null)
             {
                 return NotFound();
             }
 
-            return View(unit);
+            return View(purchaseorder);
         }
 
-        // GET: SaleOrders/Create
+        // GET: PurchaseOrders/Create
         public async Task<IActionResult> Create()
         {
-            var customer = await _context.Customers.OrderBy(t => t.CustomerName).ToListAsync();
+            var suppliers = await _context.Suppliers.OrderBy(t => t.SupplierName).ToListAsync();
             var warehouse = await _context.Warehouses.OrderBy(t => t.WarehouseName).ToListAsync();
 
-            var saleOrderVM = new SaleOrderVM
+            var purchaseOrderVM = new PurchaseOrderVM
             {
-                Customers = new SelectList(customer, "Id", "CustomerName"),
+                Suppliers = new SelectList(suppliers, "Id", "SupplierName"),
                 Warehouses = new SelectList(warehouse, "Id", "WarehouseName"),
             };
-            return View(saleOrderVM);
+            return View(purchaseOrderVM);
         }
 
-        // POST: SaleOrders/Create
+        // POST: PurchaseOrders/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,WarehouseId,CustomerId,Sotype,CreatedDate,UpdatedDate,CreatedBy,UpdatedBy")] SaleOrder saleOrder)
+        public async Task<IActionResult> Create([Bind("Id,WarehouseId,SupplierId,Potype,ContactName,PhoneNumber,CreatedDate,UpdatedDate,CreatedBy,UpdatedBy")] PurchaseOrder purchaseOrder)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(saleOrder);
+                _context.Add(purchaseOrder);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(saleOrder);
+            return View(purchaseOrder);
         }
 
-        // GET: SaleOrders/Edit/5
+        // GET: PurchaseOrders/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -141,31 +141,31 @@ namespace InventoryManagement.Controllers
                 return NotFound();
             }
 
-            var unit = await _context.SaleOrders.FindAsync(id);
-            if (unit == null)
+            var purchaseorder = await _context.PurchaseOrders.FindAsync(id);
+            if (purchaseorder == null)
             {
                 return NotFound();
             }
-            var customer = await _context.Customers.OrderBy(t => t.CustomerName).ToListAsync();
+            var suppliers = await _context.Suppliers.OrderBy(t => t.SupplierName).ToListAsync();
             var warehouse = await _context.Warehouses.OrderBy(t => t.WarehouseName).ToListAsync();
 
-            var saleOrderVM = new SaleOrderVM
+            var purchaseOrderVM = new PurchaseOrderVM
             {
-                Customers = new SelectList(customer, "Id", "CustomerName"),
+                Suppliers = new SelectList(suppliers, "Id", "CustomerName"),
                 Warehouses = new SelectList(warehouse, "Id", "WarehouseName"),
-                SaleOrder = unit
+                PurchaseOrder = purchaseorder
             };
-            return View(saleOrderVM);
+            return View(purchaseOrderVM);
         }
 
-        // POST: SaleOrders/Edit/5
+        // POST: PurchaseOrders/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,WarehouseId,CustomerId,Sotype,CreatedDate,CreatedDate,UpdatedDate,CreatedBy,UpdatedBy")] SaleOrder saleOrder)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,WarehouseId,SupplierId,Potype,ContactName,PhoneNumber,CreatedDate,CreatedDate,UpdatedDate,CreatedBy,UpdatedBy")] PurchaseOrder purchaseOrder)
         {
-            if (id != saleOrder.Id)
+            if (id != purchaseOrder.Id)
             {
                 return NotFound();
             }
@@ -174,12 +174,12 @@ namespace InventoryManagement.Controllers
             {
                 try
                 {
-                    _context.Update(saleOrder);
+                    _context.Update(purchaseOrder);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!unitExists(saleOrder.Id))
+                    if (!purchaseorderExists(purchaseOrder.Id))
                     {
                         return NotFound();
                     }
@@ -190,10 +190,10 @@ namespace InventoryManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(saleOrder);
+            return View(purchaseOrder);
         }
 
-        // GET: SaleOrders/Delete/5
+        // GET: PurchaseOrders/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -201,30 +201,30 @@ namespace InventoryManagement.Controllers
                 return NotFound();
             }
 
-            var unit = await _context.SaleOrders
+            var purchaseorder = await _context.PurchaseOrders
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (unit == null)
+            if (purchaseorder == null)
             {
                 return NotFound();
             }
 
-            return View(unit);
+            return View(purchaseorder);
         }
 
-        // POST: SaleOrders/Delete/5
+        // POST: PurchaseOrders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var unit = await _context.SaleOrders.FindAsync(id);
-            _context.SaleOrders.Remove(unit);
+            var purchaseorder = await _context.PurchaseOrders.FindAsync(id);
+            _context.PurchaseOrders.Remove(purchaseorder);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool unitExists(int id)
+        private bool purchaseorderExists(int id)
         {
-            return _context.SaleOrders.Any(e => e.Id == id);
+            return _context.PurchaseOrders.Any(e => e.Id == id);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model PaginatedListCustomer<InventoryManagement.Models.Customer>
+﻿@model InventoryManagement.PaginatedList.PaginatedListCustomer<InventoryManagement.Models.Customer>
 @*@model InventoryManagement.Models.ProductCategoryViewModel*@
 
 @{
@@ -12,7 +12,7 @@
 </p>
 <form asp-controller="Customer" asp-action="Index" method="get">
     <p>
-        Search by name: <input type="text" name="SearchString" />
+        Search by Customer name: <input type="text" name="SearchString" />
         <input type="submit" value="Filter" />
     </p>
 </form>

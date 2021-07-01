@@ -1,21 +1,18 @@
-﻿@model InventoryManagement.PaginatedList.PaginatedList<InventoryManagement.Models.Product>
+﻿@model InventoryManagement.PaginatedList.PaginatedListPurchaseOrder<InventoryManagement.Models.PurchaseOrder>
 @*@model InventoryManagement.Models.ProductCategoryViewModel*@
 
 @{
-    ViewData["Title"] = "Product Manager";
+    ViewData["Title"] = "PurchaseOrder Manager";
 }
 
-<h1>Product</h1>
+<h1>Purchase Order</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<form asp-controller="Products" asp-action="Index" method="get">
+<form asp-controller="PurchaseOrder" asp-action="Index" method="get">
     <p>
-        <select asp-for="ProductCategory" asp-items="Model.Categories">
-            <option value="">All</option>
-        </select>
-        Search by Product name: <input type="text" name="SearchString" />
+        Search by Supplier name: <input type="text" name="SearchString" />
         <input type="submit" value="Filter" />
     </p>
 </form>
@@ -23,19 +20,19 @@
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Product Name</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Supplier Name</a>
             </th>
             <th>
-               Unit Name
+                Warehouse Name
             </th>
             <th>
-                Category Name
+                PurchaseOrder Type
             </th>
             <th>
-               Length
+                Contact Name
             </th>
             <th>
-                Width
+                Phone Number
             </th>
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Created Date</a>
@@ -48,24 +45,24 @@
         {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
+                @Html.DisplayFor(modelItem => item.Supplier.SupplierName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Unit.UnitName)
+                @Html.DisplayFor(modelItem => item.Warehouse.WarehouseName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                @Html.DisplayFor(modelItem => item.Potype)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Length)
+                @Html.DisplayFor(modelItem => item.ContactName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Width)
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedDate)
             </td>
-           
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |

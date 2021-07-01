@@ -8,6 +8,7 @@ namespace InventoryManagement.Models
 {
     public partial class EmployeeWareHouse : DatetimeEntity
     {
+        public int Id { get; set; }
         public string? EmployeeId { get; set; }
         public int? WarehouseId { get; set; }
 

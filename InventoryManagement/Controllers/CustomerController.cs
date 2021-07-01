@@ -1,5 +1,6 @@
 ﻿using InventoryManagement.Data;
 using InventoryManagement.Models;
+using InventoryManagement.PaginatedList;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;

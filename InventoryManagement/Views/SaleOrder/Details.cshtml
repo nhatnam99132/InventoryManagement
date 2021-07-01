@@ -5,9 +5,9 @@
 }
 
 <h1>Details</h1>
-
+@*<a asp-area="" asp-route-id="@Model.Id" asp-controller="SaleOrderDetail" asp-action="Create">Create Sale Order Detail</a>*@
 <div>
-    <h4>Customer</h4>
+    <h4>Sale Order</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -28,6 +28,12 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Sotype)
         </dd>
+        @*<dt class="col-sm-2">
+            Sale Order Detail
+        </dt>
+        <dd class="col-sm-10">
+            <a asp-route-id="@Model.Id" asp-area="" asp-controller="SaleOrderDetail" asp-action="Detail">Click To View</a>
+        </dd>*@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.CreatedDate)
         </dt>

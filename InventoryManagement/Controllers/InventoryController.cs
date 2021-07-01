@@ -12,28 +12,28 @@ using System.Threading.Tasks;
 
 namespace InventoryManagement.Controllers
 {
-    public class SaleOrderController : Controller
+    public class InventoryController : Controller
     {
         private readonly InventoryManagementContext _context;
 
-        public SaleOrderController(InventoryManagementContext context)
+        public InventoryController(InventoryManagementContext context)
         {
             _context = context;
         }
 
-        // GET: SaleOrders
+        // GET: Inventories
         //public async Task<IActionResult> Index(string searchString)
         //{
-        //    var saleorders = from m in _context.SaleOrders
+        //    var inventories = from m in _context.Inventories
         //                     select m;
 
         //    if (!String.IsNullOrEmpty(searchString))
         //    {
-        //        saleorders = saleorders.Where(s => s.CustomerName.Contains(searchString));
+        //        inventories = inventories.Where(s => s.ProductName.Contains(searchString));
         //    }
 
-        //    return View(await saleorders.ToListAsync());
-        //    //return View(await _context.SaleOrders.ToListAsync());
+        //    return View(await inventories.ToListAsync());
+        //    //return View(await _context.Inventories.ToListAsync());
         //}
         public async Task<IActionResult> Index(
      string sortOrder,
@@ -52,27 +52,27 @@ namespace InventoryManagement.Controllers
 
             ViewData["CurrentFilter"] = searchString;
 
-            var saleorders = from s in _context.SaleOrders.Include(d => d.Warehouse).Include(d => d.Customer).AsNoTracking()
+            var inventories = from s in _context.Inventories.Include(d => d.Warehouse).Include(d => d.Product).ThenInclude(d => d.Category).AsNoTracking()
                              select s;
             if (!String.IsNullOrEmpty(searchString))
             {
-                saleorders = saleorders.Where(s => s.Customer.CustomerName.Contains(searchString));
+                inventories = inventories.Where(s => s.Product.ProductName.Contains(searchString));
             }
 
             switch (sortOrder)
             {
                 case "name_desc":
-                    saleorders = saleorders.OrderByDescending(s => s.Customer.CustomerName);
+                    inventories = inventories.OrderByDescending(s => s.Product.ProductName);
                     break;
                 case "Date":
-                    saleorders = saleorders.OrderBy(s => s.CreatedDate);
+                    inventories = inventories.OrderBy(s => s.Quantity);
                     break;
                 case "date_desc":
-                    saleorders = saleorders.OrderByDescending(s => s.CreatedDate);
+                    inventories = inventories.OrderByDescending(s => s.Quantity);
                     break;
 
                 default:
-                    saleorders = saleorders.OrderBy(s => s.Customer.CustomerName);
+                    inventories = inventories.OrderBy(s => s.Product.ProductName);
                     break;
             }
 
@@ -80,11 +80,11 @@ namespace InventoryManagement.Controllers
 
 
 
-            return View(await PaginatedListSaleOrder<SaleOrder>.CreateAsync(saleorders.AsNoTracking(), pageNumber ?? 1, pageSize));
+            return View(await PageListInventory<Inventory>.CreateAsync(inventories.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
 
-        // GET: SaleOrders/Details/5
+        // GET: Inventories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -92,48 +92,48 @@ namespace InventoryManagement.Controllers
                 return NotFound();
             }
 
-            var unit = await _context.SaleOrders
-                .Include(d => d.Warehouse).Include(d => d.Customer).AsNoTracking()
+            var inventory = await _context.Inventories
+                .Include(d => d.Warehouse).Include(d => d.Product).ThenInclude(d => d.Category).Include(d => d.Product).ThenInclude(d => d.Unit).AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (unit == null)
+            if (inventory == null)
             {
                 return NotFound();
             }
 
-            return View(unit);
+            return View(inventory);
         }
 
-        // GET: SaleOrders/Create
+        // GET: Inventories/Create
         public async Task<IActionResult> Create()
         {
-            var customer = await _context.Customers.OrderBy(t => t.CustomerName).ToListAsync();
-            var warehouse = await _context.Warehouses.OrderBy(t => t.WarehouseName).ToListAsync();
+            var products = await _context.Products.OrderBy(t => t.ProductName).ToListAsync();
+            var warehouses = await _context.Warehouses.OrderBy(t => t.WarehouseName).ToListAsync();
 
-            var saleOrderVM = new SaleOrderVM
+            var inventoryVM = new InventoryVM
             {
-                Customers = new SelectList(customer, "Id", "CustomerName"),
-                Warehouses = new SelectList(warehouse, "Id", "WarehouseName"),
+                Products = new SelectList(products, "Id", "ProductName"),
+                Warehouses = new SelectList(warehouses, "Id", "WarehouseName")
             };
-            return View(saleOrderVM);
+            return View(inventoryVM);
         }
 
-        // POST: SaleOrders/Create
+        // POST: Inventories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,WarehouseId,CustomerId,Sotype,CreatedDate,UpdatedDate,CreatedBy,UpdatedBy")] SaleOrder saleOrder)
+        public async Task<IActionResult> Create([Bind("Id,WarehouseId,ProductId,Quantity")] Inventory inventory)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(saleOrder);
+                _context.Add(inventory);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(saleOrder);
+            return View(inventory);
         }
 
-        // GET: SaleOrders/Edit/5
+        // GET: Inventories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -141,31 +141,31 @@ namespace InventoryManagement.Controllers
                 return NotFound();
             }
 
-            var unit = await _context.SaleOrders.FindAsync(id);
-            if (unit == null)
+            var inventory = await _context.Inventories.Include(d => d.Warehouse).Include(d => d.Product).ThenInclude(d => d.Category).Include(d => d.Product).ThenInclude(d => d.Unit).AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
+            if (inventory == null)
             {
                 return NotFound();
             }
-            var customer = await _context.Customers.OrderBy(t => t.CustomerName).ToListAsync();
-            var warehouse = await _context.Warehouses.OrderBy(t => t.WarehouseName).ToListAsync();
+            var products = await _context.Products.OrderBy(t => t.ProductName).ToListAsync();
+            var warehouses = await _context.Warehouses.OrderBy(t => t.WarehouseName).ToListAsync();
 
-            var saleOrderVM = new SaleOrderVM
+            var inventoryVM = new InventoryVM
             {
-                Customers = new SelectList(customer, "Id", "CustomerName"),
-                Warehouses = new SelectList(warehouse, "Id", "WarehouseName"),
-                SaleOrder = unit
+                Products = new SelectList(products, "Id", "ProductName"),
+                Warehouses = new SelectList(warehouses, "Id", "WarehouseName"),
+                Inventory = inventory
             };
-            return View(saleOrderVM);
+            return View(inventoryVM);
         }
 
-        // POST: SaleOrders/Edit/5
+        //POST: Inventories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,WarehouseId,CustomerId,Sotype,CreatedDate,CreatedDate,UpdatedDate,CreatedBy,UpdatedBy")] SaleOrder saleOrder)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,WarehouseId,ProductId,Quantity")] Inventory inventory)
         {
-            if (id != saleOrder.Id)
+            if (id != inventory.Id)
             {
                 return NotFound();
             }
@@ -174,12 +174,12 @@ namespace InventoryManagement.Controllers
             {
                 try
                 {
-                    _context.Update(saleOrder);
+                    _context.Update(inventory);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!unitExists(saleOrder.Id))
+                    if (!inventoryExists(inventory.Id))
                     {
                         return NotFound();
                     }
@@ -190,10 +190,10 @@ namespace InventoryManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(saleOrder);
+            return View(inventory);
         }
 
-        // GET: SaleOrders/Delete/5
+        // GET: Inventories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -201,30 +201,30 @@ namespace InventoryManagement.Controllers
                 return NotFound();
             }
 
-            var unit = await _context.SaleOrders
+            var inventory = await _context.Inventories.Include(d => d.Warehouse).Include(d => d.Product).ThenInclude(d => d.Category).Include(d => d.Product).ThenInclude(d => d.Unit).AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (unit == null)
+            if (inventory == null)
             {
                 return NotFound();
             }
 
-            return View(unit);
+            return View(inventory);
         }
 
-        // POST: SaleOrders/Delete/5
+        // POST: Inventories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var unit = await _context.SaleOrders.FindAsync(id);
-            _context.SaleOrders.Remove(unit);
+            var inventory = await _context.Inventories.FirstOrDefaultAsync(d => d.Id == id);
+            _context.Inventories.Remove(inventory);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool unitExists(int id)
+        private bool inventoryExists(int id)
         {
-            return _context.SaleOrders.Any(e => e.Id == id);
+            return _context.Inventories.Any(e => e.Id == id);
         }
     }
 }
