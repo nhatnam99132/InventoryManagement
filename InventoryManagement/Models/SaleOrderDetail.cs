@@ -28,12 +28,12 @@ namespace InventoryManagement.Models
 
         [Required]
         [Display(Name = "Discount")]
-        [Range(0, double.MaxValue, ErrorMessage = "Please enter valid decimal Number")]
+        [Range(0, 100, ErrorMessage = "Please enter valid decimal Number")]
         public double? Discount { get; set; }
 
         [Required]
         [Display(Name = "Vat")]
-        [Range(0, int.MaxValue, ErrorMessage = "Please enter valid decimal Number")]
+        [Range(0, 100, ErrorMessage = "Please enter valid decimal Number")]
         public double? Vat { get; set; }
 
         [Required]
