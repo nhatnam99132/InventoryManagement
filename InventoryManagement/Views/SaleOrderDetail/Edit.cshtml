@@ -15,44 +15,47 @@
             <input type="hidden" asp-for="SaleOrderDetail.Id" />
             <div class="form-group">
                 <label asp-for="SaleOrderDetail.Soid" class="control-label"></label>
-                <select class="form-control" asp-for="SaleOrderDetail.Soid" asp-items="Model.SaleOrders" disabled>
+                <select class="form-control" asp-for="SaleOrderDetail.Soid" asp-items="Model.SaleOrders">
                     <option value="">---- Select Sale Order -----</option>
                 </select>
                 <span asp-validation-for="SaleOrderDetail.ProductId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SaleOrderDetail.Product.ProductName" class="control-label"></label>
-                <input asp-for="SaleOrderDetail.Product.ProductName" class="form-control" />
-                <span asp-validation-for="SaleOrderDetail.Product.ProductName" class="text-danger"></span>
+                <label asp-for="SaleOrderDetail.ProductId" class="control-label"></label>
+                <select class="form-control" asp-for="SaleOrderDetail.ProductId" asp-items="Model.Products">
+                    <option value="">---- Select Product -----</option>
+                </select>
+                <span asp-validation-for="SaleOrderDetail.ProductId" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="SaleOrderDetail.Quantity" class="control-label"></label>
-                <input asp-for="SaleOrderDetail.Quantity" class="form-control" />
+                <input asp-for="SaleOrderDetail.Quantity" class="form-control input1" id="Quantity1" />
                 <span asp-validation-for="SaleOrderDetail.Quantity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SaleOrderDetail.Price" class="control-label"></label>
-                <input asp-for="SaleOrderDetail.Price" class="form-control" />
+                <input asp-for="SaleOrderDetail.Price" class="form-control input1" id="Price1" />
                 <span asp-validation-for="SaleOrderDetail.Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SaleOrderDetail.Discount" class="control-label"></label>
-                <input asp-for="SaleOrderDetail.Discount" class="form-control" />
-                <span asp-validation-for="SaleOrderDetail.Discount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="SaleOrderDetail.Vat" class="control-label"></label>
-                <input asp-for="SaleOrderDetail.Vat" class="form-control" />
+                <input asp-for="SaleOrderDetail.Vat" class="form-control" id="inputVat1" />
                 <span asp-validation-for="SaleOrderDetail.Vat" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="SaleOrderDetail.Discount" class="control-label"></label>
+                <input asp-for="SaleOrderDetail.Discount" class="form-control" id="inputDiscount1" />
+                <span asp-validation-for="SaleOrderDetail.Discount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="SaleOrderDetail.PriceAfterDiscount" class="control-label"></label>
-                <input asp-for="SaleOrderDetail.PriceAfterDiscount" class="form-control" />
+                <input asp-for="SaleOrderDetail.PriceAfterDiscount" class="form-control" readonly id="inputAfter1" />
                 <span asp-validation-for="SaleOrderDetail.PriceAfterDiscount" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SaleOrderDetail.TotalAmount" class="control-label"></label>
-                <input asp-for="SaleOrderDetail.TotalAmount" class="form-control" />
+                <input asp-for="SaleOrderDetail.TotalAmount" class="form-control" readonly id="inputTotalAmount1" />
                 <span asp-validation-for="SaleOrderDetail.TotalAmount" class="text-danger"></span>
             </div>
             @*<div class="form-group">

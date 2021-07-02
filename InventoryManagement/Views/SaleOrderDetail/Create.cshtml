@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" id="">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="SaleOrderDetail.Soid" class="control-label"></label>
@@ -29,32 +29,32 @@
 
             <div class="form-group">
                 <label asp-for="SaleOrderDetail.Quantity" class="control-label"></label>
-                <input asp-for="SaleOrderDetail.Quantity" class="form-control" />
+                <input asp-for="SaleOrderDetail.Quantity" class="form-control input1" id="Quantity" />
                 <span asp-validation-for="SaleOrderDetail.Quantity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SaleOrderDetail.Price" class="control-label"></label>
-                <input asp-for="SaleOrderDetail.Price" class="form-control" />
+                <input asp-for="SaleOrderDetail.Price" class="form-control input1" id="Price" />
                 <span asp-validation-for="SaleOrderDetail.Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SaleOrderDetail.Discount" class="control-label"></label>
-                <input asp-for="SaleOrderDetail.Discount" class="form-control" />
-                <span asp-validation-for="SaleOrderDetail.Discount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="SaleOrderDetail.Vat" class="control-label"></label>
-                <input asp-for="SaleOrderDetail.Vat" class="form-control" />
+                <input asp-for="SaleOrderDetail.Vat" class="form-control" id="inputVat" />
                 <span asp-validation-for="SaleOrderDetail.Vat" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="SaleOrderDetail.Discount" class="control-label"></label>
+                <input asp-for="SaleOrderDetail.Discount" class="form-control" id="inputDiscount" />
+                <span asp-validation-for="SaleOrderDetail.Discount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="SaleOrderDetail.PriceAfterDiscount" class="control-label"></label>
-                <input asp-for="SaleOrderDetail.PriceAfterDiscount" class="form-control" />
+                <input asp-for="SaleOrderDetail.PriceAfterDiscount" class="form-control" readonly id="inputAfter" />
                 <span asp-validation-for="SaleOrderDetail.PriceAfterDiscount" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SaleOrderDetail.TotalAmount" class="control-label"></label>
-                <input asp-for="SaleOrderDetail.TotalAmount" class="form-control" />
+                <input asp-for="SaleOrderDetail.TotalAmount" class="form-control" readonly id="inputTotalAmount" />
                 <span asp-validation-for="SaleOrderDetail.TotalAmount" class="text-danger"></span>
             </div>
 

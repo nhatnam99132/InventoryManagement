@@ -5,24 +5,31 @@
 @inject UserManager<Employee> UserManager
 
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a id="manage" class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"  method="post">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-light">Logout</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-light" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-light" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Hi @UserManager.GetUserName(User)!
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a id="manage" class="dropdown-item text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Dashboard</a>
+                <a class="dropdown-item text-dark" asp-area="" asp-controller="EmployeeWarehouse" asp-action="Index">Employee Warehouse Manager</a>
+
+            </div>
+        </li>
+        <li class="nav-item">
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
+                <button id="logout" type="submit" class="nav-link btn btn-link text-light">Logout</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-light" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    }
 </ul>
