@@ -22,18 +22,19 @@ namespace InventoryManagement.Models
         public int? Quantity { get; set; }
         [Required]
         [Display(Name = "Price")]
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter valid Price Number")]
         [DataType(DataType.Currency)]
    
         public double? Price { get; set; }
 
         [Required]
         [Display(Name = "Discount")]
-        [Range(0, 100, ErrorMessage = "Please enter valid decimal Number")]
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter valid discount Number")]
         public double? Discount { get; set; }
 
         [Required]
         [Display(Name = "Vat")]
-        [Range(0, 100, ErrorMessage = "Please enter valid decimal Number")]
+        [Range(0, 100, ErrorMessage = "Please enter valid Vat Number")]
         public double? Vat { get; set; }
 
         [Required]

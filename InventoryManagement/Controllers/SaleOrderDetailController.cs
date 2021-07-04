@@ -52,7 +52,7 @@ namespace InventoryManagement.Controllers
 
             ViewData["CurrentFilter"] = searchString;
 
-            var saleorderdetails = from s in _context.SaleOrderDetails.Include(d => d.Product).Include(d => d.So).ThenInclude(d => d.Customer).AsNoTracking()
+            var saleorderdetails = from s in _context.SaleOrderDetails.Include(d => d.Product).Include(d => d.So).ThenInclude(d => d.Customer).Include(d => d.So).ThenInclude(d => d.Warehouse).AsNoTracking()
                              select s;
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -83,7 +83,30 @@ namespace InventoryManagement.Controllers
             return View(await PaginatedListSaleOrderDetail<SaleOrderDetail>.CreateAsync(saleorderdetails.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
-
+        [HttpGet]
+        public async Task<IActionResult> GetInventory(int productId, int warehouseId)
+        {
+            var inventoryProduct = await _context.Inventories.FirstOrDefaultAsync(i => (i.ProductId == productId) && (i.WarehouseId == warehouseId));
+            if (inventoryProduct == null)
+                return NotFound();
+            return Ok(inventoryProduct);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetProductList(int warehouseId)
+        {
+            var products = await _context.Inventories.Include(d => d.Product).Where(i => i.WarehouseId == warehouseId).ToListAsync();
+            if (products == null)
+                return NotFound();
+            return Ok(products);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetWarehouse(int saleOrderId)
+        {
+            var warehouse = await _context.SaleOrders.Include(d => d.Warehouse).FirstOrDefaultAsync(i => i.Id == saleOrderId);
+            if (warehouse == null)
+                return NotFound();
+            return Ok(warehouse);
+        }
         // GET: SaleOrderDetailDetails/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -93,7 +116,7 @@ namespace InventoryManagement.Controllers
             }
 
             var SaleOrderDetail = await _context.SaleOrderDetails
-                .Include(d => d.So).ThenInclude(d => d.Customer).Include(d => d.Product).AsNoTracking()
+                .Include(d => d.So).ThenInclude(d => d.Customer).Include(d => d.So).ThenInclude(d => d.Warehouse).Include(d => d.Product).AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (SaleOrderDetail == null)
             {
@@ -108,12 +131,12 @@ namespace InventoryManagement.Controllers
         {
             var products = await _context.Products.OrderBy(t => t.ProductName).ToListAsync();
             var saleorders = await _context.SaleOrders.OrderBy(t => t.Id).ToListAsync();
-            
+
             var saleOrderDetailVM = new SaleOrderDetailVM
             {
                 Products = new SelectList(products, "Id", "ProductName"),
                 SaleOrders = new SelectList(saleorders, "Id", "Id"),
-              
+
             };
             return View(saleOrderDetailVM);
         }
@@ -137,6 +160,7 @@ namespace InventoryManagement.Controllers
         // GET: SaleOrderDetailDetails/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+ 
             if (id == null)
             {
                 return NotFound();
@@ -154,7 +178,8 @@ namespace InventoryManagement.Controllers
             {
                 Products = new SelectList(products, "Id", "ProductName"),
                 SaleOrders = new SelectList(saleorders, "Id", "Id"),
-                SaleOrderDetail = saleOrderDetail
+                SaleOrderDetail = saleOrderDetail,
+        
 
             };
             //var customer = await _context.Customers.OrderBy(t => t.CustomerName).ToListAsync();
@@ -212,7 +237,7 @@ namespace InventoryManagement.Controllers
                 return NotFound();
             }
 
-            var SaleOrderDetail = await _context.SaleOrderDetails.Include(d => d.Product).Include(d => d.So).ThenInclude(d => d.Customer).AsNoTracking()
+            var SaleOrderDetail = await _context.SaleOrderDetails.Include(d => d.Product).Include(d => d.So).ThenInclude(d => d.Customer).Include(d => d.So).ThenInclude(d => d.Warehouse).AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (SaleOrderDetail == null)
             {

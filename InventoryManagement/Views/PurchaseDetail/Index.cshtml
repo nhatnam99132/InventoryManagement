@@ -1,17 +1,17 @@
-﻿@model InventoryManagement.PaginatedList.PaginatedListSaleOrderDetail<InventoryManagement.Models.SaleOrderDetail>
+﻿@model InventoryManagement.PaginatedList.PaginatedListPurchaseDetail<InventoryManagement.Models.PurchaseDetail>
 
 @{
-    ViewData["Title"] = "Sale Order Detail Manager";
+    ViewData["Title"] = "Purchase Detail Detail Manager";
 }
 
-<h1>Sale Order Detail</h1>
+<h1>Purchase Detail Detail</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<form asp-controller="SaleOrderDetails" asp-action="Index" method="get">
+<form asp-controller="PurchaseDetails" asp-action="Index" method="get">
     <p>
-        Search by customer name: <input type="text" name="SearchString" />
+        Search by supplier name: <input type="text" name="SearchString" />
         <input type="submit" value="Search" />
     </p>
 </form>
@@ -19,7 +19,7 @@
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Custom Name</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Supplier Name</a>
             </th>
             <th>
                 Warehouse Name
@@ -56,10 +56,10 @@
         {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.So.Customer.CustomerName)
+                @Html.DisplayFor(modelItem => item.Po.Supplier.SupplierName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.So.Warehouse.WarehouseName)
+                @Html.DisplayFor(modelItem => item.Po.Warehouse.WarehouseName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Product.ProductName)
