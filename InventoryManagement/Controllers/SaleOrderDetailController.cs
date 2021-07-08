@@ -107,6 +107,36 @@ namespace InventoryManagement.Controllers
                 return NotFound();
             return Ok(warehouse);
         }
+        [HttpPost]
+        public async Task<IActionResult> UpdateInventory(int productId, int warehouseId, int quantity)
+        {
+         
+            var inventoryProduct = await _context.Inventories.FirstOrDefaultAsync(i => (i.ProductId == productId) && (i.WarehouseId == warehouseId));
+            if (inventoryProduct == null)
+                return NotFound();
+            inventoryProduct.Quantity = quantity;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(inventoryProduct);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!SaleOrderDetailExists(inventoryProduct.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                
+            }
+            return NoContent();
+        }
         // GET: SaleOrderDetailDetails/Details/5
         public async Task<IActionResult> Details(int? id)
         {

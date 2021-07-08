@@ -146,5 +146,40 @@
             }
         });
     });
+
+
+    $("#formSale").submit(async function (event) {
+        var i = $('#inventory').val();
+        console.log(i);
+        var q = $('#Quantity').val();
+        console.log(i);
+        var qi = i - q;
+        console.log(qi);
+
+        if (qi < 0) {
+            alert("Không đủ số lượng sản phẩm để bán");
+            event.preventDefault();
+        }
+        var Id = $('#product').val();
+        var warehouseid = $('#warehouse').val();
+        await $.ajax({
+            type: "POST",
+            url: "@Url.Action("UpdateInventory", "SaleOrderDetail")",
+            data: { productId: Id, warehouseId: warehouseid, quantity: qi },
+            //contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                //debugger;
+               
+                console.log(result)
+            },
+            error: function (response) {
+                //debugger;
+               
+                event.preventDefault();
+                console.log(response);
+            }
+        });
+    });
 </script>
 }

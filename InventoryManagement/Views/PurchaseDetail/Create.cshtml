@@ -24,7 +24,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="PurchaseDetail.ProductId" class="control-label"></label>
-                <select class="form-control" asp-for="PurchaseDetail.ProductId" asp-items="Model.Products">
+                <select class="form-control" asp-for="PurchaseDetail.ProductId" asp-items="Model.Products" id="product">
                     <option value="">---- Select Product -----</option>
                 </select>
                 <span asp-validation-for="PurchaseDetail.ProductId" class="text-danger"></span>
@@ -143,6 +143,40 @@
                 console.log(response);
             }
         });
-    })
+    });
+    $("#formPurchase").submit(async function (event) {
+
+        var q = $('#Quantity').val();
+
+        console.log(q);
+
+        if (q <= 0) {
+            alert("Không đủ số lượng sản phẩm để bán");
+            event.preventDefault();
+        }
+         var Id = $('#product').val();
+        var warehouseid = $('#warehouse').val();
+        console.log(Id);
+        console.log(warehouseid);
+        await $.ajax({
+            type: "POST",
+            url: "@Url.Action("InsertInventory", "PurchaseDetail")",
+            data: { productId: Id, warehouseId: warehouseid, quantity: q },
+            //contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                //debugger;
+ 
+                console.log(result)
+            },
+            error: function (response) {
+                //debugger;
+
+                event.preventDefault();
+                console.log(response);
+            }
+        });
+    });
+
 </script>
 }
