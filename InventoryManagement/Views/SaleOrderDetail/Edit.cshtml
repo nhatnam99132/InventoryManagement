@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit SaleOrderDetail";
+    ViewData["idProduct"] = 3;
 }
 
 <h1>Edit Sale Order Detail</h1>
@@ -10,24 +11,30 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" id="formSale">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="SaleOrderDetail.Id" />
             <div class="form-group">
                 <label asp-for="SaleOrderDetail.Soid" class="control-label"></label>
-                <select class="form-control" asp-for="SaleOrderDetail.Soid" asp-items="Model.SaleOrders">
+                <select class="form-control" asp-for="SaleOrderDetail.Soid" asp-items="Model.SaleOrders"  id="saleorder">
                     <option value="">---- Select Sale Order -----</option>
                 </select>
-                <span asp-validation-for="SaleOrderDetail.ProductId" class="text-danger"></span>
+                <span asp-validation-for="SaleOrderDetail.Soid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="hidden" class="form-control" value="0" disabled id="warehouse" />
             </div>
             <div class="form-group">
                 <label asp-for="SaleOrderDetail.ProductId" class="control-label"></label>
-                <select class="form-control" asp-for="SaleOrderDetail.ProductId" asp-items="Model.Products">
+                <select class="form-control" asp-for="SaleOrderDetail.ProductId" asp-items="Model.Products" id="product">
                     <option value="">---- Select Product -----</option>
                 </select>
                 <span asp-validation-for="SaleOrderDetail.ProductId" class="text-danger"></span>
             </div>
-
+            <div class="form-group">
+                <label class="control-label">Inventory Product</label>
+                <input class="form-control" value="0" disabled id="inventory" />
+            </div>
             <div class="form-group">
                 <label asp-for="SaleOrderDetail.Quantity" class="control-label"></label>
                 <input asp-for="SaleOrderDetail.Quantity" class="form-control input1" id="Quantity1" />
@@ -91,4 +98,125 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    $(async function () {
+        var Id1 = $('#saleorder').val();
+         await $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetWarehouse", "SaleOrderDetail")",
+            data: { saleOrderId: Id1 },
+            //contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                //debugger;
+                $('#warehouse').val(result.warehouseId);
+                console.log(result)
+            },
+            error: function (response) {
+                //debugger;
+                $('#warehouse').val("Error Warehouse");
+                console.log(response);
+            }
+        });
+        var Id = $('#product').val();
+        var warehouseid = $('#warehouse').val();
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetInventory", "SaleOrderDetail")",
+            data: { productId: Id, warehouseID: warehouseid },
+            //contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                //debugger;
+                $('#inventory').val(result.quantity);
+                console.log(result)
+            },
+            error: function (response) {
+                //debugger;
+                $('#inventory').val(0);
+                console.log(response);
+            }
+        });
+    });
+
+    $("#product").on("change", function (e) {
+        // alert(this.value);
+        //debugger;
+        var Id = this.value;
+        var warehouseid = $('#warehouse').val();
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetInventory", "SaleOrderDetail")",
+            data: { productId: Id, warehouseID: warehouseid },
+            //contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                //debugger;
+                $('#inventory').val(result.quantity);
+                console.log(result)
+            },
+            error: function (response) {
+                //debugger;
+                $('#inventory').val(0);
+                console.log(response);
+            }
+        });
+    });
+    $("#saleorder").on("change", function (e) {
+        // alert(this.value);
+        //debugger;
+        var Id = this.value;
+
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetWarehouse", "SaleOrderDetail")",
+            data: { saleOrderId: Id },
+            //contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                //debugger;
+                $('#warehouse').val(result.warehouseId);
+                console.log(result)
+            },
+            error: function (response) {
+                //debugger;
+                $('#warehouse').val("Error Warehouse");
+                console.log(response);
+            }
+        });
+    });
+    $("#formSale").submit(async function (event) {
+        var i = $('#inventory').val();
+        console.log(i);
+        var q = $('#Quantity1').val();
+        console.log(i);
+        var qi = i - q;
+        console.log(qi);
+
+        if (qi < 0) {
+            alert("Không đủ số lượng sản phẩm để bán");
+            event.preventDefault();
+        }
+         var Id = $('#product').val();
+        var warehouseid = $('#warehouse').val();
+        await $.ajax({
+            type: "POST",
+            url: "@Url.Action("UpdateInventory", "SaleOrderDetail")",
+            data: { productId: Id, warehouseId: warehouseid, quantity: qi },
+            //contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                //debugger;
+
+                console.log(result)
+            },
+            error: function (response) {
+                //debugger;
+
+                event.preventDefault();
+                console.log(response);
+            }
+        });
+    });
+</script>
 }

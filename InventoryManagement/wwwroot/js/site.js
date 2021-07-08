@@ -5,7 +5,7 @@
 $("#Quantity").val(1);
 $("#Price").val(1);
 $("#inputDiscount").val(0);
-$("#Vat").val(0);
+$("#inputVat").val(0);
 $("#inputAfter").val(0);
 
 $("#inputTotalAmount").val(1);
@@ -15,16 +15,18 @@ $(document).ready(function () {
     $(".form-group").on('input', '.input1', function () {
        // code logic here
         var getValue=$(this).val();
-        console.log(getValue);
-
-        var inputTotalAmount = $("#inputTotalAmount").val();
+       // console.log(getValue);
+        if ($("#inputTotalAmount").val() <= 0)
+            var inputTotalAmount = 1;
+        else
+            var inputTotalAmount = $("#inputTotalAmount").val();
         
         $(".form-group .input1").each(function () {
             var get_textbox_value = $(this).val();
             if ($.isNumeric(get_textbox_value)) {
-                inputTotalAmount *= parseFloat(get_textbox_value);
+                inputTotalAmount = parseFloat($("#Quantity").val()) * parseFloat($("#Price").val());
             }
-            console.log(inputTotalAmount);
+        //    console.log(inputTotalAmount);
         });
         
         $("#inputTotalAmount").val(inputTotalAmount);
@@ -33,17 +35,18 @@ $(document).ready(function () {
     $(".form-group").on('input', '#inputVat', function () {
         // code logic here
         var getValue = $(this).val();
-        console.log(getValue);
+        //console.log(getValue);
         var inputTotalAmount = parseFloat($("#Quantity").val()) * parseFloat($("#Price").val());
-        console.log(inputTotalAmount);
+       // console.log(inputTotalAmount);
 
         $(".form-group #inputVat").each(function () {
             var get_textbox_value = $(this).val();
             if ($.isNumeric(get_textbox_value)) {
                 var vat = (parseFloat(get_textbox_value) / 100) * inputTotalAmount;
-                inputTotalAmount -= vat;
+                //inputTotalAmount += vat;
+                inputTotalAmount = inputTotalAmount + vat;
             }
-            console.log(get_textbox_value);
+          //  console.log(get_textbox_value);
         });
 
         $("#inputTotalAmount").val(inputTotalAmount);
@@ -54,25 +57,27 @@ $(document).ready(function () {
     $(".form-group").on('input', '#inputDiscount', function () {
         // code logic here
         var getValue = $(this).val();
-        console.log(getValue);
-        if ($("#inputVat").val())
-            var inputTotalAmount = parseFloat($("#Quantity").val()) * parseFloat($("#Price").val()) - parseFloat($("#inputVat").val()/100);
-        else
-            var inputTotalAmount = parseFloat($("#Quantity").val()) * parseFloat($("#Price").val());
-        console.log(inputTotalAmount);
-        var PriceAfterDiscount = 0;
+       // console.log(getValue);
+       
+       // console.log(inputTotalAmount);
+
+        //var vat = (parseFloat($("#inputVat").val()) / 100) * (parseFloat($("#Quantity").val()) * parseFloat($("#Price").val()));
+        var inputTotalAmount = $("#inputTotalAmount").val();
+
         $(".form-group #inputDiscount").each(function () {
+            
             var get_textbox_value = $(this).val();
             if ($.isNumeric(get_textbox_value)) {
-                inputTotalAmount -= parseFloat(get_textbox_value);
-                PriceAfterDiscount = inputTotalAmount;
+                var discount = parseFloat(get_textbox_value);
+                inputTotalAmount = inputTotalAmount - discount;
+                var PriceAfterDiscount = $("#inputTotalAmount").val() - discount;
+                $("#inputAfter").val(PriceAfterDiscount);
+
             }
-            console.log(PriceAfterDiscount);
-            console.log(inputTotalAmount);
+            //console.log(PriceAfterDiscount);
+            //console.log(inputTotalAmount);
         });
-        $("#inputAfter").val(PriceAfterDiscount);
        
-        $("#inputTotalAmount").val(inputTotalAmount);
 
     });
 
@@ -85,16 +90,18 @@ $(document).ready(function () {
     $(".form-group").on('input', '.input1', function () {
         // code logic here
         var getValue = $(this).val();
-        console.log(getValue);
-
-        var inputTotalAmount = 1;
+        // console.log(getValue);
+        if ($("#inputTotalAmount1").val() <= 0)
+            var inputTotalAmount = 1;
+        else
+            var inputTotalAmount = 1;
 
         $(".form-group .input1").each(function () {
             var get_textbox_value = $(this).val();
             if ($.isNumeric(get_textbox_value)) {
-                inputTotalAmount *= parseFloat(get_textbox_value);
+                inputTotalAmount = parseFloat($("#Quantity1").val()) * parseFloat($("#Price1").val());
             }
-            console.log(inputTotalAmount);
+            //    console.log(inputTotalAmount);
         });
 
         $("#inputTotalAmount1").val(inputTotalAmount);
@@ -103,17 +110,18 @@ $(document).ready(function () {
     $(".form-group").on('input', '#inputVat1', function () {
         // code logic here
         var getValue = $(this).val();
-        console.log(getValue);
+        //console.log(getValue);
         var inputTotalAmount = parseFloat($("#Quantity1").val()) * parseFloat($("#Price1").val());
-        console.log(inputTotalAmount);
+        // console.log(inputTotalAmount);
 
         $(".form-group #inputVat1").each(function () {
             var get_textbox_value = $(this).val();
             if ($.isNumeric(get_textbox_value)) {
                 var vat = (parseFloat(get_textbox_value) / 100) * inputTotalAmount;
-                inputTotalAmount -= vat;
+                //inputTotalAmount += vat;
+                inputTotalAmount = inputTotalAmount + vat;
             }
-            console.log(get_textbox_value);
+            //  console.log(get_textbox_value);
         });
 
         $("#inputTotalAmount1").val(inputTotalAmount);
@@ -124,28 +132,32 @@ $(document).ready(function () {
     $(".form-group").on('input', '#inputDiscount1', function () {
         // code logic here
         var getValue = $(this).val();
-        console.log(getValue);
-        if ($("#inputVat1").val())
-            var inputTotalAmount = parseFloat($("#Quantity1").val()) * parseFloat($("#Price1").val()) - parseFloat($("#inputVat1").val() / 100);
-        else
-            var inputTotalAmount = parseFloat($("#Quantity1").val()) * parseFloat($("#Price1").val());
-        console.log(inputTotalAmount);
-        var PriceAfterDiscount = 0;
-        $(".form-group #inputDiscount").each(function () {
+        // console.log(getValue);
+
+        // console.log(inputTotalAmount);
+
+        //var vat = (parseFloat($("#inputVat1").val()) / 100) * (parseFloat($("#Quantity1").val()) * parseFloat($("#Price1").val()));
+        var inputTotalAmount = $("#inputTotalAmount1").val();
+
+        $(".form-group #inputDiscount1").each(function () {
+
             var get_textbox_value = $(this).val();
             if ($.isNumeric(get_textbox_value)) {
-                inputTotalAmount -= parseFloat(get_textbox_value);
-                PriceAfterDiscount = inputTotalAmount;
-            }
-            console.log(PriceAfterDiscount);
-            console.log(inputTotalAmount);
-        });
-        $("#inputAfter1").val(PriceAfterDiscount);
+                var discount = parseFloat(get_textbox_value);
+                inputTotalAmount = $("#inputTotalAmount1").val(); - discount;
+                var PriceAfterDiscount = inputTotalAmount - discount;
+                $("#inputAfter1").val(PriceAfterDiscount);
 
-        $("#inputTotalAmount1").val(inputTotalAmount);
+            }
+            //console.log(PriceAfterDiscount);
+            //console.log(inputTotalAmount);
+        });
+
 
     });
 
 
 
 });
+
+

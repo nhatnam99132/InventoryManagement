@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,13 +9,17 @@ namespace InventoryManagement.Models
 {
     public partial class Inventory
     {
+        
         public int Id { get; set; }
+        
         [Required]
         [Display(Name = "Warehouse Name")]
         public int? WarehouseId { get; set; }
+    
         [Required]
         [Display(Name = "Product Name")]
-        public int? ProductId { get; set; }
+        public int ProductId { get; set; }
+   
         [Required]
         [Display(Name = "Quantity")]
         [Range(0, int.MaxValue, ErrorMessage = "Please enter valid integer Number")]
