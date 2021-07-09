@@ -10,10 +10,13 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<form asp-controller="Supplier" asp-action="Index" method="get">
+<form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" asp-controller="Supplier" asp-action="Index" method="get">
     <p>
-        Search by Supplier name: <input type="text" name="SearchString" />
-        <input type="submit" value="Filter" />
+        <input type="text" name="SearchString" class="form-control bg-light" placeholder="Search for..."
+               aria-label="Search" aria-describedby="basic-addon2" />
+        <button class="btn btn-primary" type="submit" value="Filter">
+            <i class="fas fa-search fa-sm"></i>
+        </button>
     </p>
 </form>
 <table class="table">
